@@ -1,5 +1,5 @@
 <?php
-
+defined('BASEPATH') or exit('No direct script access allowed');
 class Dashboard extends CI_Controller
 {
 
@@ -25,119 +25,85 @@ class Dashboard extends CI_Controller
 	function category()
 	{
 		$data['title'] = 'Category';
-		$data['category'] = $this->M_category->get_all();
+		$data['category'] = $this->M_category->get_category();
 		$this->load->view('template_a/__header', $data);
 		$this->load->view('category_a');
 		// var_dump($data['category']);
 		$this->load->view('template_a/__footer');
 	}
 
-	function add_category()
+	function addcategory()
 	{
-		$this->form_validation->set_rules('category_name', 'Category Name', 'required|trim');
+		$this->form_validation->set_rules('category_name', 'Category', 'required|trim|is_unique[category.category_name]', [
+			'is_unique' => 'This Category has already!'
+		]);
 
 		if ($this->form_validation->run() == false) {
-			$data['title'] = 'Category';
-			$data['category'] = $this->M_category->get_all();
+			$data['title'] = 'Data Category';
+			$data['category'] = $this->M_category->get_category();
+
 			$this->load->view('template_a/__header', $data);
-			$this->load->view('category_a');
+			$this->load->view('category_a', $data);
 			$this->load->view('template_a/__footer');
 		} else {
-			$category_name = $this->input->post('category_name');
-			$this->M_category->insert($category_name);
+			$this->M_category->add_category();
 			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New category added!</div>');
-			redirect(base_url('dashboard/category'));
+			redirect('dashboard/category');
 		}
 	}
 
-	function edit_category()
+	function editcategory($category_id)
 	{
-		$this->form_validation->set_rules('category_name', 'Category Name', 'required|trim');
+		$data['title'] = 'Data Category';
+		$data['category'] = $this->M_category->get_category_by_id($category_id);
+
+		$this->form_validation->set_rules('category_name', 'Category', 'required|trim|is_unique[category.category_name]', [
+			'is_unique' => 'This Category has already!'
+		]);
 
 		if ($this->form_validation->run() == false) {
-			$data['title'] = 'Category';
-			$data['category'] = $this->M_category->get_all()->result();
-			$data['category'] = $this->M_category->get_by_id()->result();
 			$this->load->view('template_a/__header', $data);
-			$this->load->view('category_a');
+			$this->load->view('category_a', $data);
 			$this->load->view('template_a/__footer');
 		} else {
 			$category_name = $this->input->post('category_name');
-			$this->M_category->update($category_name);
-			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Category has been updated!</div>');
-			redirect(base_url('dashboard/category'));
-		}
-	}
-
-	function delete_category()
-	{
-		$category_id = $this->uri->segment(3);
-		$this->M_category->delete($category_id);
-		redirect(base_url('dashboard/category'));
-	}
-
-	function search_category()
-	{
-		$key = $this->input->post('key');
-		$data['title'] = 'Category';
-		$data['category'] = $this->M_category->search($key);
-		$this->load->view('template_a/__header', $data);
-		$this->load->view('category_a');
-		$this->load->view('template_a/__footer');
-	}
-
-	function subcategory()
-	{
-		$data['title'] = 'Sub Category';
-		$data['subcategory'] = $this->M_subcategory->get_all()->result();
-		$this->load->view('template_a/__header', $data);
-		$this->load->view('subcategory_a');
-		// var_dump($data['subcategory']);
-		$this->load->view('template_a/__footer');
-	}
-
-	function add_subcategory()
-	{
-		$this->form_validation->set_rules('category_id', 'Category', 'required|trim');
-		$this->form_validation->set_rules('subcategory_name', 'Sub Category Name', 'required|trim');
-
-		if ($this->form_validation->run() == false) {
-			$data['title'] = 'Sub Category';
-			$data['subcategory'] = $this->M_subcategory->get_all()->result();
-			$data['category'] = $this->M_category->get_all()->result();
-			$this->load->view('template_a/__header', $data);
-			$this->load->view('subcategory_a', $data);
-			$this->load->view('template_a/__footer');
-		} else {
 			$category_id = $this->input->post('category_id');
-			$subcategory_name = $this->input->post('subcategory_name');
-			$data = array(
-				'category_id' => $category_id,
-				'subcategory_name' => $subcategory_name
-			);
-			$this->M_subcategory->insert($data);
-			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New sub category added!</div>');
-			redirect(base_url('dashboard/subcategory'));
+			$data['category'] = $this->M_category->get_category_by_id($category_id);
+
+			// cek jika ada gambar yang akan diupload
+			$upload_image = $_FILES['banner']['name'];
+
+			if ($upload_image) {
+				$config['allowed_types'] = 'gif|jpg|png';
+				$config['max_size']     = '2048';
+				$config['upload_path'] = './assets/img/category/';
+
+				$this->load->library('upload', $config);
+
+				if ($this->upload->do_upload('banner')) {
+					$old_image = $data['category']['banner'];
+					if ($old_image != 'default.jpg') {
+						unlink(FCPATH . 'assets/img/category/' . $old_image);
+					}
+					$new_image = $this->upload->data('file_name');
+					$this->db->set('banner', $new_image);
+				} else {
+					echo $this->upload->display_errors();
+				}
+			}
+
+			$this->db->set('category_name', $category_name);
+			$this->db->where('category_id', $category_id);
+			$this->db->update('category');
+
+			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Category has been updated!</div>');
+			redirect('dashboard/category');
 		}
 	}
-
-	function edit_subcategory()
+	function deletecategory($category_id)
 	{
-		$this->form_validation->set_rules('category_id', 'Category', 'required|trim');
-		$this->form_validation->set_rules('subcategory_name', 'Sub Category Name', 'required|trim');
-
-		if ($this->form_validation->run() == false) {
-			$data['title'] = 'Sub Category';
-			$data['subcategory'] = $this->M_subcategory->get_all()->result();
-			$data['subcategory'] = $this->M_subcategory->get_by_id()->result();
-			$data['category'] = $this->M_category->get_all()->result();
-			$this->load->view('template_a/__header', $data);
-			$this->load->view('subcategory_a', $data);
-			$this->load->view('template_a/__footer');
-		} else {
-			$this->M_subcategory->update();
-			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Sub category has been updated!</div>');
-			redirect(base_url('dashboard/subcategory'));
-		}
+		$this->M_category->delete_category($category_id);
+		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Category has been deleted!</div>');
+		redirect('dashboard/category');
 	}
 }

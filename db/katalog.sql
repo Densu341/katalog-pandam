@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Generation Time: Apr 03, 2023 at 03:35 PM
+-- Generation Time: Apr 09, 2023 at 02:37 AM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 5.6.40
 
@@ -30,54 +30,17 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `category` (
   `category_id` int(11) NOT NULL,
-  `category_name` varchar(100) NOT NULL
+  `category_name` varchar(100) NOT NULL,
+  `banner` varchar(256) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`category_id`, `category_name`) VALUES
-(1, 'Pandan'),
-(7, 'Batik');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `product`
---
-
-CREATE TABLE `product` (
-  `product_id` int(11) NOT NULL,
-  `subcategory_id` int(11) NOT NULL,
-  `product_name` varchar(100) NOT NULL,
-  `height` float NOT NULL,
-  `width` float NOT NULL,
-  `length` float NOT NULL,
-  `description` text NOT NULL,
-  `photo` varchar(100) NOT NULL,
-  `material` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `subcategory`
---
-
-CREATE TABLE `subcategory` (
-  `subcategory_id` int(11) NOT NULL,
-  `category_id` int(11) NOT NULL,
-  `subcategory_name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `subcategory`
---
-
-INSERT INTO `subcategory` (`subcategory_id`, `category_id`, `subcategory_name`) VALUES
-(1, 1, 'Bags'),
-(2, 1, 'Binder');
+INSERT INTO `category` (`category_id`, `category_name`, `banner`) VALUES
+(1, 'Bags', 'Bags.png'),
+(6, 'Binder', 'Binder.png');
 
 -- --------------------------------------------------------
 
@@ -110,20 +73,6 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
 
 --
--- Indexes for table `product`
---
-ALTER TABLE `product`
-  ADD PRIMARY KEY (`product_id`),
-  ADD KEY `fb_subcategory` (`subcategory_id`);
-
---
--- Indexes for table `subcategory`
---
-ALTER TABLE `subcategory`
-  ADD PRIMARY KEY (`subcategory_id`),
-  ADD KEY `fk_category` (`category_id`);
-
---
 -- Indexes for table `user`
 --
 ALTER TABLE `user`
@@ -140,38 +89,10 @@ ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
--- AUTO_INCREMENT for table `product`
---
-ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `subcategory`
---
-ALTER TABLE `subcategory`
-  MODIFY `subcategory_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `product`
---
-ALTER TABLE `product`
-  ADD CONSTRAINT `fb_subcategory` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategory` (`subcategory_id`);
-
---
--- Constraints for table `subcategory`
---
-ALTER TABLE `subcategory`
-  ADD CONSTRAINT `fk_category` FOREIGN KEY (`category_id`) REFERENCES `category` (`category_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
