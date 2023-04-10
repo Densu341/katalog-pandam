@@ -215,12 +215,12 @@ class Dashboard extends CI_Controller
 		$this->form_validation->set_rules('product_name', 'Product', 'required|trim|is_unique[product.product_name]', [
 			'is_unique' => 'This Product has already!'
 		]);
-		$this->form_validation->set_rules('sub_id', 'Subcategory', 'required|trim');
 		$this->form_validation->set_rules('length', 'Length', 'required|trim');
 		$this->form_validation->set_rules('width', 'Width', 'required|trim');
 		$this->form_validation->set_rules('height', 'Height', 'required|trim');
-		$this->form_validation->set_rules('description', 'Description', 'required|trim');
 		$this->form_validation->set_rules('price', 'Price', 'required|trim');
+		$this->form_validation->set_rules('description', 'Description', 'required|trim');
+		$this->form_validation->set_rules('sub_id', 'Subcategory', 'required|trim');
 
 		if ($this->form_validation->run() == false) {
 			$data['title'] = 'Data Product';
@@ -235,5 +235,79 @@ class Dashboard extends CI_Controller
 			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New product added!</div>');
 			redirect('dashboard/product');
 		}
+	}
+
+	function editproduct()
+	{
+		$product_id = $this->uri->segment(3);
+		$data['title'] = 'Data Product';
+		$data['product'] = $this->M_product->get_product();
+		$data['subcategory'] = $this->M_product->get_subcategory();
+
+		$this->form_validation->set_rules('product_name', 'Product', 'required|trim');
+		$this->form_validation->set_rules('length', 'Length', 'required|trim');
+		$this->form_validation->set_rules('width', 'Width', 'required|trim');
+		$this->form_validation->set_rules('height', 'Height', 'required|trim');
+		$this->form_validation->set_rules('price', 'Price', 'required|trim');
+		$this->form_validation->set_rules('description', 'Description', 'required|trim');
+		$this->form_validation->set_rules('sub_id', 'Subcategory', 'required|trim');
+
+		if ($this->form_validation->run() == false) {
+			$this->load->view('template_a/__header', $data);
+			$this->load->view('product_a', $data);
+			$this->load->view('template_a/__footer');
+		} else {
+			$product_name = $this->input->post('product_name');
+			$length = $this->input->post('length');
+			$width = $this->input->post('width');
+			$height = $this->input->post('height');
+			$price = $this->input->post('price');
+			$description = $this->input->post('description');
+			$sub_id = $this->input->post('sub_id');
+			$product_id = $this->input->post('product_id');
+			$data['product'] = $this->M_product->get_product_by_id($product_id);
+
+			// cek jika ada gambar yang akan diupload
+			$upload_image = $_FILES['picture']['name'];
+
+			if ($upload_image) {
+				$config['allowed_types'] = 'gif|jpg|png';
+				$config['max_size']     = '2048';
+				$config['upload_path'] = './assets/img/product/';
+
+				$this->load->library('upload', $config);
+
+				if ($this->upload->do_upload('picture')) {
+					$old_image = $data['product']['picture'];
+					if ($old_image != 'default.jpg') {
+						unlink(FCPATH . 'assets/img/product/' . $old_image);
+					}
+					$new_image = $this->upload->data('file_name');
+					$this->db->set('picture', $new_image);
+				} else {
+					echo $this->upload->display_errors();
+				}
+			}
+			$this->db->set('product_name', $product_name);
+			$this->db->set('length', $length);
+			$this->db->set('width', $width);
+			$this->db->set('height', $height);
+			$this->db->set('price', $price);
+			$this->db->set('description', $description);
+			$this->db->set('sub_id', $sub_id);
+			$this->db->where('product_id', $product_id);
+			$this->db->update('product');
+
+			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has been updated!</div>');
+			redirect('dashboard/product');
+		}
+	}
+
+	function deleteproduct()
+	{
+		$product_id = $this->input->post('product_id');
+		$this->M_product->delete_product($product_id);
+		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has been deleted!</div>');
+		redirect('dashboard/product');
 	}
 }

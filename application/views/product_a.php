@@ -55,7 +55,6 @@
             </tbody>
         </table>
 
-
     </div> <!-- /.container-fluid -->
     <!-- end of content-->
 </div>
@@ -99,7 +98,7 @@
                 <div class="form-group">
                     <div class="custom-file">
                         <input type="file" class="custom-file-input" id="picture" name="picture">
-                        <label class="custom-file-label" for="picture">Add Picture</label>
+                        <label class="custom-file-label" for="picture">Choose file</label>
                     </div>
                 </div>
                 <div class="form-group">
@@ -118,3 +117,102 @@
     </div>
 </div>
 <!-- End Modal Add -->
+
+<!-- Modal Edit -->
+<?php foreach ($product as $p) : ?>
+    <div class="modal fade" id="editProductModal<?= $p['product_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="editProductModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editProductModalLabel">Edit Product</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <?= form_open_multipart('dashboard/editproduct/' . $p['product_id']); ?>
+                <input type="hidden" name="product_id" value="<?= $p['product_id']; ?>">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" value="<?= $p['product_name']; ?>">
+                    </div>
+                    <div class="form-group">
+                        <select name="sub_id" id="sub_id" class="form-control">
+                            <option value="">Select SubCategory</option>
+                            <?php foreach ($subcategory as $s) : ?>
+                                <?php if ($s['sub_id'] == $p['sub_id']) : ?>
+                                    <option value="<?= $p['sub_id']; ?>" selected><?= $p['subcategory_name']; ?></option>
+                                <?php else : ?>
+                                    <option value="<?= $s['sub_id']; ?>"><?= $s['subcategory_name']; ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" class="form-control" id="length" name="length" placeholder="Length" value="<?= $p['length']; ?>">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" id="width" name="width" placeholder="Width" value="<?= $p['width']; ?>">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" id="height" name="height" placeholder="Height" value="<?= $p['height']; ?>">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <img src="<?= base_url('assets/img/product/') . $p['picture']; ?>" class="img-thumbnail">
+                                </div>
+                                <div class="col-sm-9">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="picture" name="picture">
+                                        <label class="custom-file-label" for="picture">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" id="description" name="description" placeholder="Description"><?= $p['description']; ?></textarea>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="price" name="price" placeholder="Rp.xxx.xxx" value="<?= $p['price']; ?>">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Edit</button>
+                </div>
+                <?= form_close(); ?>
+            </div>
+        </div>
+    </div>
+<?php endforeach; ?>
+<!-- End Modal Edit -->
+
+<!-- Modal delete -->
+<div class="modal fade" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="deleteProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteProductModalLabel">Delete Product</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formDelete" action="" method="POST">
+                <input type="hidden" name="product_id" value="<?= $p['product_id']; ?>">
+                <div class="modal-body">
+                    <p>Are you sure want to delete this product?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

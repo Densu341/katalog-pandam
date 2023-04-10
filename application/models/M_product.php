@@ -43,12 +43,12 @@ class M_product extends CI_Model
     private function _uploadImage()
     {
         $config['upload_path']          = './assets/img/product/';
-        $config['allowed_types']        = 'gif|jpg|png';
+        $config['allowed_types']        = 'gif|jpg|jpeg|png';
         $config['file_name']            = $this->input->post('product_name');
         $config['overwrite']            = true;
         $config['max_size']             = 2048; // 2MB
-        $config['max_width']            = 1200;
-        $config['max_height']           = 768;
+        $config['max_width']            = 1400;
+        $config['max_height']           = 1600;
 
         $this->load->library('upload', $config);
 
@@ -67,10 +67,16 @@ class M_product extends CI_Model
             'length' => $this->input->post('length'),
             'width' => $this->input->post('width'),
             'height' => $this->input->post('height'),
-            'picture' => $this->_uploadImage(),
             'description' => $this->input->post('description'),
-            'price' => $this->input->post('price')
+            'price' => $this->input->post('price'),
+            'picture' => $this->_uploadImage()
         ];
         $this->db->insert('product', $data);
+    }
+
+    public function delete_product()
+    {
+        $this->db->where('product_id', $this->input->post('product_id'));
+        $this->db->delete('product');
     }
 }
