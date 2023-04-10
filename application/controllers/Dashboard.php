@@ -53,8 +53,9 @@ class Dashboard extends CI_Controller
 		}
 	}
 
-	function editcategory($category_id)
+	function editcategory()
 	{
+		$category_id = $this->uri->segment(3);
 		$data['title'] = 'Data Category';
 		$data['category'] = $this->M_category->get_category_by_id($category_id);
 
