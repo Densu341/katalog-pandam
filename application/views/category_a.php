@@ -90,7 +90,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <?= form_open_multipart('dashboard/editcategory' . $c['category_id']); ?>
+                <?= form_open_multipart('dashboard/editcategory/' . $c['category_id']); ?>
                 <input type="hidden" name="category_id" value="<?= $c['category_id']; ?>">
                 <div class="modal-body">
                     <div class="form-group">
