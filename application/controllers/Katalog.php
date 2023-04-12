@@ -18,7 +18,8 @@ class Katalog extends CI_Controller
 		$data['title'] = "Katalog Pandam";
 		$this->load->view('template/header', $data);
 		$this->load->view('katalog', $data);
-		var_dump($data);
+		// var_dump($data);
+		// die;
 		$this->load->view('template/footer');
 	}
 
