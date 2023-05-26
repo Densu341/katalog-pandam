@@ -11,9 +11,9 @@
 </head>
 
 <body class="container-fluid">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid mx-4 my-2">
-      <img src="<?= base_url() ?>/assets/favicon.png" alt="" class="navbar-brand" height="80">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2 fixed-top bg-opacity-75">
+    <div class="container-fluid mx-4">
+      <img src="<?= base_url() ?>/assets/favicon.png" alt="" class="navbar-brand opacity-100" height="80">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -39,3 +39,6 @@
       </div>
     </div>
   </nav>
+  <div class="container-fluid bg-light">
+    <div style="height: 96px;"></div>
+  </div>

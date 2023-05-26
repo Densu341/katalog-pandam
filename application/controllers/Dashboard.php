@@ -23,6 +23,14 @@ class Dashboard extends CI_Controller
 		$this->load->view('template_a/__footer');
 	}
 
+	function editprofile()
+	{
+		$data['title'] = 'Edit Profile';
+		$this->load->view('template_a/__header', $data);
+		$this->load->view('editprofile_a');
+		$this->load->view('template_a/__footer');
+	}
+
 	function category()
 	{
 		$data['title'] = 'Category';
@@ -55,13 +63,10 @@ class Dashboard extends CI_Controller
 
 	function editcategory()
 	{
-		$category_id = $this->uri->segment(3);
 		$data['title'] = 'Data Category';
-		$data['category'] = $this->M_category->get_category_by_id($category_id);
+		$data['category'] = $this->M_category->get_category();
 
-		$this->form_validation->set_rules('category_name', 'Category', 'required|trim|is_unique[category.category_name]', [
-			'is_unique' => 'This Category has already!'
-		]);
+		$this->form_validation->set_rules('category_name', 'Category', 'required|trim');
 
 		if ($this->form_validation->run() == false) {
 			$this->load->view('template_a/__header', $data);
@@ -70,14 +75,14 @@ class Dashboard extends CI_Controller
 		} else {
 			$category_name = $this->input->post('category_name');
 			$category_id = $this->input->post('category_id');
-			$data['category'] = $this->M_category->get_category_by_id($category_id);
+			$data['category'] = $this->M_category->get_cat_by_id($category_id);
 
 			// cek jika ada gambar yang akan diupload
 			$upload_image = $_FILES['banner']['name'];
 
 			if ($upload_image) {
-				$config['allowed_types'] = 'gif|jpg|png';
-				$config['max_size']     = '2048';
+				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['max_size']     = '10240';
 				$config['upload_path'] = './assets/img/category/';
 
 				$this->load->library('upload', $config);
@@ -102,6 +107,7 @@ class Dashboard extends CI_Controller
 			redirect('dashboard/category');
 		}
 	}
+
 	function deletecategory($category_id)
 	{
 		$this->M_category->delete_category($category_id);
@@ -147,9 +153,7 @@ class Dashboard extends CI_Controller
 		$data['subcategory'] = $this->M_subcategory->get_subcategory();
 		$data['category'] = $this->M_subcategory->get_category();
 
-		$this->form_validation->set_rules('subcategory_name', 'Subcategory', 'required|trim|is_unique[subcategory.subcategory_name]', [
-			'is_unique' => 'This Subcategory has already!'
-		]);
+		$this->form_validation->set_rules('subcategory_name', 'Subcategory', 'required|trim');
 		$this->form_validation->set_rules('category_id', 'Category', 'required|trim');
 
 		if ($this->form_validation->run() == false) {
@@ -165,8 +169,8 @@ class Dashboard extends CI_Controller
 			$upload_image = $_FILES['image']['name'];
 
 			if ($upload_image) {
-				$config['allowed_types'] = 'gif|jpg|png';
-				$config['max_size']     = '2048';
+				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['max_size']     = '10240';
 				$config['upload_path'] = './assets/img/subcategory/';
 
 				$this->load->library('upload', $config);
