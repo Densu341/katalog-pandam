@@ -23,12 +23,45 @@ class Dashboard extends CI_Controller
 		$this->load->view('template_a/__footer');
 	}
 
-	function editprofile()
+	public function edit()
 	{
 		$data['title'] = 'Edit Profile';
-		$this->load->view('template_a/__header', $data);
-		$this->load->view('editprofile_a');
-		$this->load->view('template_a/__footer');
+		$data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+		$this->form_validation->set_rules('username', 'Username', 'required|trim');
+		var_dump($data['user']);
+		if ($this->form_validation->run() == false) {
+			$this->load->view('template_a/__header', $data);
+			$this->load->view('editprofile_a', $data);
+			$this->load->view('template_a/__footer');
+		} else {
+			$email = $this->input->post('email');
+			$username = $this->input->post('username');
+
+			// cek jika ada gambar yang akan diupload
+			$upload_image = $_FILES['image']['email'];
+
+			if ($upload_image) {
+				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['max_size']     = '2048';
+				$config['upload_path'] = './assets/img/profile/';
+				$this->load->library('upload', $config);
+				if ($this->upload->do_upload('image')) {
+					$old_image = $data['user']['image'];
+					if ($old_image != 'default.png') {
+						unlink(FCPATH . 'assets/img/profile/' . $old_image);
+					}
+					$new_image = $this->upload->data('file_name');
+					$this->db->set('image', $new_image);
+				} else {
+					echo $this->upload->display_errors();
+				}
+			}
+			$this->db->set('email', $email);
+			$this->db->where('username', $username);
+			$this->db->update('user');
+			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Your profile has been updated!</div>');
+			redirect('dashboard');
+		}
 	}
 
 	function category()
