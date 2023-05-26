@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Generation Time: Apr 09, 2023 at 10:18 PM
+-- Generation Time: May 26, 2023 at 05:55 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 5.6.40
 
@@ -31,16 +31,37 @@ SET time_zone = "+00:00";
 CREATE TABLE `category` (
   `category_id` int(11) NOT NULL,
   `category_name` varchar(100) NOT NULL,
-  `banner` varchar(256) NOT NULL
+  `banner` varchar(256) NOT NULL,
+  `cat_code` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`category_id`, `category_name`, `banner`) VALUES
-(1, 'Bags', 'Bags.png'),
-(6, 'Binder', 'Binder.png');
+INSERT INTO `category` (`category_id`, `category_name`, `banner`, `cat_code`) VALUES
+(1, 'Bags', 'Bags.png', 'B'),
+(6, 'Binder', 'binder.png', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `material`
+--
+
+CREATE TABLE `material` (
+  `mat_id` int(11) NOT NULL,
+  `material_name` varchar(100) NOT NULL,
+  `mat_code` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `material`
+--
+
+INSERT INTO `material` (`mat_id`, `material_name`, `mat_code`) VALUES
+(1, 'Rekta Pandan', 'RTPD'),
+(2, 'Embroider Lurik', 'EBLRK');
 
 -- --------------------------------------------------------
 
@@ -65,7 +86,9 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_id`, `sub_id`, `product_name`, `length`, `width`, `height`, `picture`, `description`, `price`) VALUES
-(1, 2, 'Purana Handbag', 21, 15, 17, 'Purana_Handbag.jpeg', 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis rem repudiandae quidem eaque unde eligendi, fugit, natus delectus eum architecto libero, adipisci expedita hic sapiente ratione sunt. Est distinctio voluptatem molestiae deleniti fuga, odio sunt nam nihil minima expedita possimus perspiciatis sed mollitia dolorum ad atque amet magni voluptatum adipisci?', 1000000);
+(1, 2, 'Purana Handbag', 21, 15, 17, 'Purana_Handbag.jpeg', 'Est distinctio voluptatem molestiae deleniti fuga, odio sunt nam nihil minima expedita possimus perspiciatis sed mollitia dolorum ad atque amet magni voluptatum adipisci?', 1000000),
+(4, 2, 'Hand Bag Natural', 25, 15, 17, 'Hand_Bag_Natural.jpeg', 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit, tempora obcaecati omnis quod accusamus ea et rem nam quibusdam labore?', 400000),
+(5, 2, 'Hand Bag Natural (Tas Jinjing)', 25, 15, 17, 'Hampers_Bags.png', 'lorem', 1000000);
 
 -- --------------------------------------------------------
 
@@ -77,17 +100,19 @@ CREATE TABLE `subcategory` (
   `sub_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `subcategory_name` varchar(100) NOT NULL,
-  `image` varchar(256) NOT NULL
+  `image` varchar(256) NOT NULL,
+  `sub_code` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `subcategory`
 --
 
-INSERT INTO `subcategory` (`sub_id`, `category_id`, `subcategory_name`, `image`) VALUES
-(1, 1, 'Tote Bags', 'Totebags.png'),
-(2, 1, 'Hand Bags', 'Hand_Bags.png'),
-(4, 6, 'Binder Mix', 'Binder_Mix.png');
+INSERT INTO `subcategory` (`sub_id`, `category_id`, `subcategory_name`, `image`, `sub_code`) VALUES
+(1, 1, 'Tote Bags', 'Totebags.png', 'TB'),
+(2, 1, 'Hand Bag', 'Hand_Bags1.png', 'HB'),
+(4, 6, 'Ecofriendly Binder', 'Binder_Mix1.png', 'EB'),
+(5, 1, 'Hampers Bag', 'Hampers_Bags.png', 'HPB');
 
 -- --------------------------------------------------------
 
@@ -97,17 +122,19 @@ INSERT INTO `subcategory` (`sub_id`, `category_id`, `subcategory_name`, `image`)
 
 CREATE TABLE `user` (
   `no` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
   `username` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `role` varchar(100) NOT NULL
+  `role` varchar(100) NOT NULL,
+  `image` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`no`, `username`, `password`, `role`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'administrator');
+INSERT INTO `user` (`no`, `email`, `username`, `password`, `role`, `image`) VALUES
+(1, 'pandamadiwastrajanaloka@gmail.com', 'administrator', '21232f297a57a5a743894a0e4a801fc3', 'administrator', 'default.png');
 
 --
 -- Indexes for dumped tables
@@ -118,6 +145,12 @@ INSERT INTO `user` (`no`, `username`, `password`, `role`) VALUES
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `material`
+--
+ALTER TABLE `material`
+  ADD PRIMARY KEY (`mat_id`);
 
 --
 -- Indexes for table `product`
@@ -148,16 +181,22 @@ ALTER TABLE `category`
   MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `material`
+--
+ALTER TABLE `material`
+  MODIFY `mat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `subcategory`
 --
 ALTER TABLE `subcategory`
-  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`
