@@ -70,7 +70,6 @@ class Dashboard extends CI_Controller
 		$data['category'] = $this->M_category->get_category();
 		$this->load->view('template_a/__header', $data);
 		$this->load->view('category_a');
-		// var_dump($data['category']);
 		$this->load->view('template_a/__footer');
 	}
 
