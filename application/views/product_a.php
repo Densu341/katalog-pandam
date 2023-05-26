@@ -27,7 +27,7 @@
                     <th scope="col">Width</th>
                     <th scope="col">Height</th>
                     <th scope="col">Picture</th>
-                    <th scope="col">Description</th>
+                    <th scope="col">Unicode</th>
                     <th scope="col">Price</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -44,7 +44,7 @@
                         <td><?= $p['width']; ?></td>
                         <td><?= $p['height']; ?></td>
                         <td><img src="<?= base_url() ?>assets/img/product/<?= $p['picture']; ?>" alt="" class="img-thumbnail" width="100"></td>
-                        <td><?= $p['description']; ?></td>
+                        <td>kosong</td>
                         <td>IDR <?= number_format($p['price'], 0, ',', '.'); ?></td>
                         <td>
                             <a href="" class="btn btn-sm btn-warning mb-1" data-toggle="modal" data-target="#editProductModal<?= $p['product_id']; ?>"><i class="fas fa-pen fa-fw"></i></a>

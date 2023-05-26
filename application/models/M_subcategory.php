@@ -25,9 +25,9 @@ class M_subcategory extends CI_Model
         $config['allowed_types']        = 'gif|jpg|png';
         $config['file_name']            = $this->input->post('subcategory_name');
         $config['overwrite']            = true;
-        $config['max_size']             = 2048; // 2MB
-        $config['max_width']            = 1200;
-        $config['max_height']           = 768;
+        $config['max_size']             = 10240; // 2MB
+        $config['max_width']            = 2600;
+        $config['max_height']           = 1700;
 
         $this->load->library('upload', $config);
 

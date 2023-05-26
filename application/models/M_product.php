@@ -46,7 +46,7 @@ class M_product extends CI_Model
         $config['allowed_types']        = 'gif|jpg|jpeg|png';
         $config['file_name']            = $this->input->post('product_name');
         $config['overwrite']            = true;
-        $config['max_size']             = 2048; // 2MB
+        $config['max_size']             = 5120; // 5MB
         $config['max_width']            = 1400;
         $config['max_height']           = 1600;
 

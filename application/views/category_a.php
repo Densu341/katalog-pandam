@@ -1,5 +1,3 @@
-<!-- edit content start here-->
-
 <div class="container-fluid">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -44,7 +42,6 @@
             </tbody>
         </table>
     </div>
-</div>
 </div>
 
 <!-- Modal Add -->

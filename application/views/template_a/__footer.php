@@ -11,9 +11,6 @@
       </div>
       <!-- End of Content Wrapper -->
 
-      </div>
-      <!-- End of Page Wrapper -->
-
       <!-- Scroll to Top Button-->
       <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -38,28 +35,21 @@
         </div>
       </div>
 
+      <!-- Bootstrap core JavaScript-->
+      <script src="<?php echo base_url() ?>assets/js/jquery.min.js"></script>
+      <script src="<?php echo base_url() ?>assets/js/bootstrap.bundle.min.js"></script>
+
+      <!-- Core plugin JavaScript-->
+      <script src="<?php echo base_url() ?>assets/js/jquery.easing.min.js"></script>
+
+      <!-- Custom scripts for all pages-->
+      <script src="<?php echo base_url() ?>assets/js/sb-admin-2.min.js"></script>
       <script>
         $('.custom-file-input').on('change', function() {
           let fileName = $(this).val().split('\\').pop();
           $(this).next('.custom-file-label').addClass("selected").html(fileName);
         });
       </script>
-      <!-- Bootstrap core JavaScript-->
-      <script src="<?php echo base_url('assets/js/jquery.min.js'); ?>"></script>
-      <script src="<?php echo base_url('assets/js/bootstrap.bundle.min.js'); ?>"></script>
-
-      <!-- Core plugin JavaScript-->
-      <script src="<?php echo base_url('assets/js/jquery.easing.min.js'); ?>"></script>
-
-      <!-- Custom scripts for all pages-->
-      <script src="<?php echo base_url('assets/js/sb-admin-2.min.js'); ?>"></script>
-
-      <!-- Page level plugins -->
-      <script src="<?php echo base_url('assets/js/Chart.min.js'); ?>"></script>
-
-      <!-- chart -->
-      <script src="<?php echo base_url('assets/js/demo/chart-bar-demo.js'); ?>"></script>
-      <script src="<?php echo base_url('assets/js/demo/chart-pie-demo.js'); ?>"></script>
       </body>
 
       </html>
