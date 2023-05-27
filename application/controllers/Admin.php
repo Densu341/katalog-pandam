@@ -26,7 +26,7 @@ class Admin extends CI_Controller
 		$lihat = $this->M_login->status("user", $where);
 		if ($lihat->num_rows() > 0) {
 			foreach ($lihat->result() as $xx) {
-				$sess_data['username'] = $xx->username;
+				$sess_data['email'] = $xx->email;
 				$sess_data['role'] = $xx->role;
 				$sess_data['status'] = "admin";
 				$this->session->set_userdata($sess_data);

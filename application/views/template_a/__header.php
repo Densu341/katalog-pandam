@@ -55,6 +55,7 @@
             <a class="collapse-item" href="<?= base_url() ?>dashboard/category">Category</a>
             <a class="collapse-item" href="<?= base_url() ?>dashboard/subcategory">Subcategory</a>
             <a class="collapse-item" href="<?= base_url() ?>dashboard/product">Product</a>
+            <a class="collapse-item" href="<?= base_url() ?>dashboard/material">Material</a>
           </div>
         </div>
       </li>
@@ -173,8 +174,8 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $this->session->userdata('username'); ?></span>
-                <img class="img-profile rounded-circle" src="<?= base_url() ?>assets/img/profile/default.png">
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?= $user['username']; ?></span>
+                <img class="img-profile rounded-circle" src="<?= base_url() ?>assets/img/profile/<?= $user['image']; ?>">
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
