@@ -279,6 +279,16 @@ class Dashboard extends CI_Controller
 			$this->load->view('product_a', $data);
 			$this->load->view('template_a/__footer');
 		} else {
+			// cek tabel kode 
+			// jika code sub category ada
+			// cek code material // jika ada
+			// ambil kode product
+			//  kode product + 1
+			// masukan ke tabel code
+			// code material tidak ada 
+			// masukan data sub code - mat code - material code (1)
+			// masukan data sub code - mat code - material code (1)
+
 			$this->M_product->add_product();
 			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New product added!</div>');
 			redirect('dashboard/product');

@@ -79,4 +79,8 @@ class M_product extends CI_Model
         $this->db->where('product_id', $this->input->post('product_id'));
         $this->db->delete('product');
     }
+
+    // ambil data dari tabel code
+
+    // add data ke tabel code
 }
