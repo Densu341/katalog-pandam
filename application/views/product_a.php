@@ -175,12 +175,12 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <textarea class="form-control" id="description" name="description" placeholder="Description"><?= $p['description']; ?></textarea>
-                </div>
-                <div class="form-group">
-                    <input type="text" class="form-control" id="price" name="price" placeholder="Rp.xxx.xxx" value="<?= $p['price']; ?>">
+                    <div class="form-group">
+                        <textarea class="form-control" id="description" name="description" placeholder="Description"><?= $p['description']; ?></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="price" name="price" placeholder="Rp.xxx.xxx" value="<?= $p['price']; ?>">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

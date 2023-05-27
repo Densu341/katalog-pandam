@@ -47,8 +47,8 @@ class M_product extends CI_Model
         $config['file_name']            = $this->input->post('product_name');
         $config['overwrite']            = true;
         $config['max_size']             = 5120; // 5MB
-        $config['max_width']            = 1400;
-        $config['max_height']           = 1600;
+        $config['max_width']            = 1920;
+        $config['max_height']           = 1080;
 
         $this->load->library('upload', $config);
 

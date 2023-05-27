@@ -25,9 +25,9 @@ class M_category extends CI_Model
         $config['allowed_types']        = 'svg|gif|jpg|png|jpeg';
         $config['file_name']            = $this->input->post('category_name');
         $config['overwrite']            = true;
-        $config['max_size']             = 10240; // 10MB
-        $config['max_width']            = 2600;
-        $config['max_height']           = 1700;
+        $config['max_size']             = 5120; // 10MB
+        $config['max_width']            = 1920;
+        $config['max_height']           = 1080;
 
         $this->load->library('upload', $config);
 

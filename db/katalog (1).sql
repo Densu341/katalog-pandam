@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.5
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3307
--- Generation Time: May 26, 2023 at 05:55 PM
--- Server version: 10.1.38-MariaDB
--- PHP Version: 5.6.40
+-- Generation Time: May 27, 2023 at 05:56 PM
+-- Server version: 10.4.27-MariaDB
+-- PHP Version: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -31,17 +30,29 @@ SET time_zone = "+00:00";
 CREATE TABLE `category` (
   `category_id` int(11) NOT NULL,
   `category_name` varchar(100) NOT NULL,
-  `banner` varchar(256) NOT NULL,
-  `cat_code` varchar(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `banner` varchar(256) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `category`
 --
 
-INSERT INTO `category` (`category_id`, `category_name`, `banner`, `cat_code`) VALUES
-(1, 'Bags', 'Bags.png', 'B'),
-(6, 'Binder', 'binder.png', '');
+INSERT INTO `category` (`category_id`, `category_name`, `banner`) VALUES
+(1, 'Bags', 'Bags.png'),
+(6, 'Binder', 'binder.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `code`
+--
+
+CREATE TABLE `code` (
+  `id` int(11) NOT NULL,
+  `sub_code` varchar(100) NOT NULL,
+  `mat_code` varchar(100) NOT NULL,
+  `product_code` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -53,7 +64,7 @@ CREATE TABLE `material` (
   `mat_id` int(11) NOT NULL,
   `material_name` varchar(100) NOT NULL,
   `mat_code` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `material`
@@ -79,7 +90,7 @@ CREATE TABLE `product` (
   `picture` varchar(256) NOT NULL,
   `description` text NOT NULL,
   `price` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `product`
@@ -88,7 +99,7 @@ CREATE TABLE `product` (
 INSERT INTO `product` (`product_id`, `sub_id`, `product_name`, `length`, `width`, `height`, `picture`, `description`, `price`) VALUES
 (1, 2, 'Purana Handbag', 21, 15, 17, 'Purana_Handbag.jpeg', 'Est distinctio voluptatem molestiae deleniti fuga, odio sunt nam nihil minima expedita possimus perspiciatis sed mollitia dolorum ad atque amet magni voluptatum adipisci?', 1000000),
 (4, 2, 'Hand Bag Natural', 25, 15, 17, 'Hand_Bag_Natural.jpeg', 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit, tempora obcaecati omnis quod accusamus ea et rem nam quibusdam labore?', 400000),
-(5, 2, 'Hand Bag Natural (Tas Jinjing)', 25, 15, 17, 'Hampers_Bags.png', 'lorem', 1000000);
+(5, 2, 'Hand Bag Natural (Tas Jinjing)', 25, 15, 18, 'Hampers_Bags.png', 'lorem ipsum', 150000);
 
 -- --------------------------------------------------------
 
@@ -102,7 +113,7 @@ CREATE TABLE `subcategory` (
   `subcategory_name` varchar(100) NOT NULL,
   `image` varchar(256) NOT NULL,
   `sub_code` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `subcategory`
@@ -127,14 +138,14 @@ CREATE TABLE `user` (
   `password` varchar(100) NOT NULL,
   `role` varchar(100) NOT NULL,
   `image` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`no`, `email`, `username`, `password`, `role`, `image`) VALUES
-(1, 'pandamadiwastrajanaloka@gmail.com', 'administrator', '21232f297a57a5a743894a0e4a801fc3', 'administrator', 'default.png');
+(1, 'pandamadiwastrajanaloka@gmail.com', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'administrator', 'default.jpg');
 
 --
 -- Indexes for dumped tables
@@ -145,6 +156,12 @@ INSERT INTO `user` (`no`, `email`, `username`, `password`, `role`, `image`) VALU
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
+
+--
+-- Indexes for table `code`
+--
+ALTER TABLE `code`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `material`
@@ -178,13 +195,19 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `code`
+--
+ALTER TABLE `code`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `material`
 --
 ALTER TABLE `material`
-  MODIFY `mat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `mat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -196,7 +219,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `subcategory`
 --
 ALTER TABLE `subcategory`
-  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user`

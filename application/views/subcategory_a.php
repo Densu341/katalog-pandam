@@ -25,6 +25,7 @@
                     <th scope="col">SubCategory</th>
                     <th scope="col">Category</th>
                     <th scope="col">Image</th>
+                    <th scope="col">Code</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -37,6 +38,7 @@
                         <td><?= $s['subcategory_name']; ?></td>
                         <td><?= $s['category_name']; ?></td>
                         <td><img src="<?= base_url() ?>assets/img/subcategory/<?= $s['image']; ?>" alt="" class="img-thumbnail" width="100"></td>
+                        <td><?= $s['sub_code']; ?></td>
                         <td>
                             <a href="" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#editSubModal<?= $s['sub_id']; ?>"><i class="fas fa-pen"></i></a>
                             <a href="" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteSubModal" onclick="$('#deleteSubModal #formDelete').attr('action', '<?= base_url() ?>dashboard/deletesubcategory/<?= $s['sub_id']; ?>')"><i class="fas fa-trash"></i></a>
@@ -79,6 +81,9 @@
                         <input type="file" class="custom-file-input" id="image" name="image">
                         <label class="custom-file-label" for="image">Add Image</label>
                     </div>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="sub_code" name="sub_code" placeholder="Subcategory Code">
                 </div>
             </div>
             <div class="modal-footer">
@@ -134,6 +139,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="sub_code" name="sub_code" value="<?= $s['sub_code']; ?>">
                     </div>
                 </div>
                 <div class="modal-footer">

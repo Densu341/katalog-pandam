@@ -22,12 +22,12 @@ class M_subcategory extends CI_Model
     private function _uploadImage()
     {
         $config['upload_path']          = './assets/img/subcategory/';
-        $config['allowed_types']        = 'gif|jpg|png';
+        $config['allowed_types']        = 'gif|jpg|png|jpeg';
         $config['file_name']            = $this->input->post('subcategory_name');
         $config['overwrite']            = true;
-        $config['max_size']             = 10240; // 2MB
-        $config['max_width']            = 2600;
-        $config['max_height']           = 1700;
+        $config['max_size']             = 5120; // 5MB
+        $config['max_width']            = 1920;
+        $config['max_height']           = 1080;
 
         $this->load->library('upload', $config);
 
@@ -43,6 +43,7 @@ class M_subcategory extends CI_Model
         $data = [
             'category_id' => $this->input->post('category_id'),
             'subcategory_name' => $this->input->post('subcategory_name'),
+            'sub_code' => $this->input->post('sub_code'),
             'image' => $this->_uploadImage()
         ];
         $this->db->insert('subcategory', $data);

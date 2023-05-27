@@ -9,6 +9,7 @@ class Dashboard extends CI_Controller
 		$this->load->model('M_category');
 		$this->load->model('M_subcategory');
 		$this->load->model('M_product');
+		$this->load->model('M_material');
 
 		if ($this->session->userdata('status') != "admin") {
 			redirect(base_url("admin"));
@@ -18,6 +19,7 @@ class Dashboard extends CI_Controller
 	function index()
 	{
 		$data['title'] = 'Dashboard';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$this->load->view('template_a/__header', $data);
 		$this->load->view('dashboard_a');
 		$this->load->view('template_a/__footer');
@@ -26,9 +28,9 @@ class Dashboard extends CI_Controller
 	public function edit()
 	{
 		$data['title'] = 'Edit Profile';
-		$data['user'] = $this->db->get_where('user', ['username' => $this->session->userdata('username')])->row_array();
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$this->form_validation->set_rules('username', 'Username', 'required|trim');
-		var_dump($data['user']);
+		// var_dump($data['user']);
 		if ($this->form_validation->run() == false) {
 			$this->load->view('template_a/__header', $data);
 			$this->load->view('editprofile_a', $data);
@@ -36,9 +38,10 @@ class Dashboard extends CI_Controller
 		} else {
 			$email = $this->input->post('email');
 			$username = $this->input->post('username');
+			$no = $this->input->post('no');
 
 			// cek jika ada gambar yang akan diupload
-			$upload_image = $_FILES['image']['email'];
+			$upload_image = $_FILES['image']['username'];
 
 			if ($upload_image) {
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
@@ -56,17 +59,18 @@ class Dashboard extends CI_Controller
 					echo $this->upload->display_errors();
 				}
 			}
-			$this->db->set('email', $email);
-			$this->db->where('username', $username);
+			$this->db->set('username', $username);
+			$this->db->where('email', $email);
 			$this->db->update('user');
 			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Your profile has been updated!</div>');
-			redirect('dashboard');
+			redirect('dashboard/edit');
 		}
 	}
 
 	function category()
 	{
 		$data['title'] = 'Category';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['category'] = $this->M_category->get_category();
 		$this->load->view('template_a/__header', $data);
 		$this->load->view('category_a');
@@ -114,7 +118,9 @@ class Dashboard extends CI_Controller
 
 			if ($upload_image) {
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
-				$config['max_size']     = '10240';
+				$config['max_size']     = '5120';
+				$config['max_width'] = '1920';
+				$config['max_height'] = '1080';
 				$config['upload_path'] = './assets/img/category/';
 
 				$this->load->library('upload', $config);
@@ -150,11 +156,11 @@ class Dashboard extends CI_Controller
 	function subcategory()
 	{
 		$data['title'] = 'Subcategory';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['subcategory'] = $this->M_subcategory->get_subcategory();
 		$data['category'] = $this->M_subcategory->get_category();
 		$this->load->view('template_a/__header', $data);
 		$this->load->view('subcategory_a');
-		// var_dump($data['subcategory']);
 		$this->load->view('template_a/__footer');
 	}
 
@@ -187,6 +193,7 @@ class Dashboard extends CI_Controller
 
 		$this->form_validation->set_rules('subcategory_name', 'Subcategory', 'required|trim');
 		$this->form_validation->set_rules('category_id', 'Category', 'required|trim');
+		$this->form_validation->set_rules('sub_code', 'Subcategory', 'required|trim');
 
 		if ($this->form_validation->run() == false) {
 			$this->load->view('template_a/__header', $data);
@@ -195,6 +202,7 @@ class Dashboard extends CI_Controller
 		} else {
 			$subcategory_name = $this->input->post('subcategory_name');
 			$sub_id = $this->input->post('sub_id');
+			$sub_code = $this->input->post('sub_code');
 			$data['subcategory'] = $this->M_subcategory->get_sub_by_id($sub_id);
 
 			// cek jika ada gambar yang akan diupload
@@ -202,7 +210,9 @@ class Dashboard extends CI_Controller
 
 			if ($upload_image) {
 				$config['allowed_types'] = 'gif|jpg|png|jpeg';
-				$config['max_size']     = '10240';
+				$config['max_size']     = '5120';
+				$config['max_width']	= '1920';
+				$config['max_height']	= '1080';
 				$config['upload_path'] = './assets/img/subcategory/';
 
 				$this->load->library('upload', $config);
@@ -220,6 +230,7 @@ class Dashboard extends CI_Controller
 			}
 
 			$this->db->set('subcategory_name', $subcategory_name);
+			$this->db->set('sub_code', $sub_code);
 			$this->db->where('sub_id', $sub_id);
 			$this->db->update('subcategory');
 
@@ -239,6 +250,7 @@ class Dashboard extends CI_Controller
 	function product()
 	{
 		$data['title'] = 'Product';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$data['product'] = $this->M_product->get_product();
 		$data['subcategory'] = $this->M_product->get_subcategory();
 		$this->load->view('template_a/__header', $data);
@@ -318,7 +330,9 @@ class Dashboard extends CI_Controller
 
 			if ($upload_image) {
 				$config['allowed_types'] = 'gif|jpg|png';
-				$config['max_size']     = '2048';
+				$config['max_size']     = '5120';
+				$config['max_widht']	= '1920';
+				$config['max_height']	= '1080';
 				$config['upload_path'] = './assets/img/product/';
 
 				$this->load->library('upload', $config);
@@ -355,5 +369,72 @@ class Dashboard extends CI_Controller
 		$this->M_product->delete_product($product_id);
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has been deleted!</div>');
 		redirect('dashboard/product');
+	}
+
+	function material()
+	{
+		$data['title'] = 'Data Material';
+		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$data['material'] = $this->M_material->get_material();
+		$this->load->view('template_a/__header', $data);
+		$this->load->view('material_a');
+		$this->load->view('template_a/__footer');
+	}
+
+	function addmaterial()
+	{
+		$this->form_validation->set_rules('material_name', 'Material', 'required|trim|is_unique[material.material_name]', [
+			'is_unique' => 'This Material has already!'
+		]);
+
+		if ($this->form_validation->run() == false) {
+			$data['title'] = 'Data Material';
+			$data['material'] = $this->M_material->get_material();
+
+			$this->load->view('template_a/__header', $data);
+			$this->load->view('material_a', $data);
+			$this->load->view('template_a/__footer');
+		} else {
+			$this->M_material->add_material();
+			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New material added!</div>');
+			redirect('dashboard/material');
+		}
+	}
+
+	function editmaterial()
+	{
+		$mat_id = $this->uri->segment(3);
+		$data['title'] = 'Data Material';
+		$data['material'] = $this->M_material->get_material();
+
+		$this->form_validation->set_rules('material_name', 'Material', 'required|trim');
+		$this->form_validation->set_rules('mat_code', 'Material', 'required|trim');
+
+		if ($this->form_validation->run() == false) {
+			$this->load->view('template_a/__header', $data);
+			$this->load->view('material_a', $data);
+			$this->load->view('template_a/__footer');
+		} else {
+			$material_name = $this->input->post('material_name');
+			$mat_code = $this->input->post('mat_code');
+			$mat_id = $this->input->post('mat_id');
+			$data['material'] = $this->M_material->get_material_by_id($mat_id);
+
+			$this->db->set('material_name', $material_name);
+			$this->db->set('mat_code', $mat_code);
+			$this->db->where('mat_id', $mat_id);
+			$this->db->update('material');
+
+			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Material has been updated!</div>');
+			redirect('dashboard/material');
+		}
+	}
+
+	function deletematerial()
+	{
+		$mat_id = $this->input->post('mat_id');
+		$this->M_material->delete_material($mat_id);
+		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Material has been deleted!</div>');
+		redirect('dashboard/material');
 	}
 }
