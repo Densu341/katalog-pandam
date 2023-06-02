@@ -2,8 +2,8 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3307
--- Generation Time: May 27, 2023 at 05:56 PM
+-- Host: 127.0.0.1
+-- Generation Time: Jun 02, 2023 at 05:30 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -89,17 +89,18 @@ CREATE TABLE `product` (
   `height` int(11) NOT NULL,
   `picture` varchar(256) NOT NULL,
   `description` text NOT NULL,
-  `price` float NOT NULL
+  `price` float NOT NULL,
+  `product_code` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`product_id`, `sub_id`, `product_name`, `length`, `width`, `height`, `picture`, `description`, `price`) VALUES
-(1, 2, 'Purana Handbag', 21, 15, 17, 'Purana_Handbag.jpeg', 'Est distinctio voluptatem molestiae deleniti fuga, odio sunt nam nihil minima expedita possimus perspiciatis sed mollitia dolorum ad atque amet magni voluptatum adipisci?', 1000000),
-(4, 2, 'Hand Bag Natural', 25, 15, 17, 'Hand_Bag_Natural.jpeg', 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit, tempora obcaecati omnis quod accusamus ea et rem nam quibusdam labore?', 400000),
-(5, 2, 'Hand Bag Natural (Tas Jinjing)', 25, 15, 18, 'Hampers_Bags.png', 'lorem ipsum', 150000);
+INSERT INTO `product` (`product_id`, `sub_id`, `product_name`, `length`, `width`, `height`, `picture`, `description`, `price`, `product_code`) VALUES
+(1, 2, 'Purana Handbag', 21, 15, 17, 'Purana_Handbag.jpeg', 'Est distinctio voluptatem molestiae deleniti fuga, odio sunt nam nihil minima expedita possimus perspiciatis sed mollitia dolorum ad atque amet magni voluptatum adipisci?', 1000000, ''),
+(4, 2, 'Hand Bag Natural', 25, 15, 17, 'Hand_Bag_Natural.jpeg', 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit, tempora obcaecati omnis quod accusamus ea et rem nam quibusdam labore?', 400000, ''),
+(5, 2, 'Hand Bag Natural (Tas Jinjing)', 25, 15, 18, 'Hampers_Bags.png', 'lorem ipsum', 150000, '');
 
 -- --------------------------------------------------------
 
