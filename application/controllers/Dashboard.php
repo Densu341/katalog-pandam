@@ -10,6 +10,7 @@ class Dashboard extends CI_Controller
 		$this->load->model('M_subcategory');
 		$this->load->model('M_product');
 		$this->load->model('M_material');
+		$this->load->model('M_code');
 
 		if ($this->session->userdata('status') != "admin") {
 			redirect(base_url("admin"));
@@ -251,10 +252,18 @@ class Dashboard extends CI_Controller
 	{
 		$data['title'] = 'Product';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
+		// ambil data dari database
 		$data['product'] = $this->M_product->get_product();
 		$data['subcategory'] = $this->M_product->get_subcategory();
+		$data['material'] = $this->M_material->get_material();
+
+		// var_dump($data['material']);
+		// die;
+
+		// load view 
 		$this->load->view('template_a/__header', $data);
-		$this->load->view('product_a');
+		$this->load->view('product_a', $data);
 		$this->load->view('template_a/__footer');
 	}
 
@@ -269,6 +278,7 @@ class Dashboard extends CI_Controller
 		$this->form_validation->set_rules('price', 'Price', 'required|trim');
 		$this->form_validation->set_rules('description', 'Description', 'required|trim');
 		$this->form_validation->set_rules('sub_id', 'Subcategory', 'required|trim');
+		$this->form_validation->set_rules('material_id', 'Material', 'required|trim');
 
 		if ($this->form_validation->run() == false) {
 			$data['title'] = 'Data Product';
@@ -279,9 +289,38 @@ class Dashboard extends CI_Controller
 			$this->load->view('product_a', $data);
 			$this->load->view('template_a/__footer');
 		} else {
-			// cek tabel kode 
-			// jika code sub category ada
-			// cek code material // jika ada
+			// persiapkan data
+			$sub_id = $this->input->post('sub_id');
+			$mat_id = $this->input->post('material_id');
+
+			// cek tabel kode
+			$sub = [
+				'sub_id' => $sub_id
+			];
+			$subCode = $this->M_code->get($sub);
+
+			if (!$subCode) {
+				// jika data tidak ada
+				$product_code = '001';
+			} else {
+				// jika data ada
+				$matCode = [
+					'sub_id' => $sub_id,
+					'mat_id' => $mat_id
+				];
+				$subCode = $this->M_code->get($sub);
+				// cek code material
+				if (!$subCode) {
+					// jika kode material tidak ada
+					$product_code = '001';
+				} else {
+					// jika kode material ada
+					$number = $subCode[0]['product_code'] + 1;
+					$product_code = sprintf('%03d', $number);
+				}
+			}
+
+
 			// ambil kode product
 			//  kode product + 1
 			// masukan ke tabel code
@@ -289,7 +328,26 @@ class Dashboard extends CI_Controller
 			// masukan data sub code - mat code - material code (1)
 			// masukan data sub code - mat code - material code (1)
 
-			$this->M_product->add_product();
+			$dataProduct = [
+				'product_name' => $this->input->post('product_name'),
+				'sub_id' => $sub_id,
+				'mat_id' => $mat_id,
+				'length' => $this->input->post('length'),
+				'width' => $this->input->post('width'),
+				'height' => $this->input->post('height'),
+				'product_code' => $product_code,
+				'description' => $this->input->post('description'),
+				'price' => $this->input->post('price'),
+				'picture' => $this->_uploadImage()
+			];
+
+			// insert ke tabel product
+			$this->M_product->add_product($dataProduct);
+
+			$dataCode = [
+				'sub_code' => $sub_id,
+			];
+
 			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New product added!</div>');
 			redirect('dashboard/product');
 		}
@@ -436,5 +494,25 @@ class Dashboard extends CI_Controller
 		$this->M_material->delete_material($mat_id);
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Material has been deleted!</div>');
 		redirect('dashboard/material');
+	}
+
+	// upload image function
+	private function _uploadImage()
+	{
+		$config['upload_path']          = './assets/img/product/';
+		$config['allowed_types']        = 'gif|jpg|jpeg|png';
+		$config['file_name']            = $this->input->post('product_name');
+		$config['overwrite']            = true;
+		$config['max_size']             = 5120; // 5MB
+		$config['max_width']            = 1920;
+		$config['max_height']           = 1080;
+
+		$this->load->library('upload', $config);
+
+		if ($this->upload->do_upload('picture')) {
+			return $this->upload->data("file_name");
+		}
+
+		return "default.jpg";
 	}
 }
