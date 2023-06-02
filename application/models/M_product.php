@@ -40,37 +40,9 @@ class M_product extends CI_Model
         return $query->row_array();
     }
 
-    private function _uploadImage()
+    public function add_product($data)
     {
-        $config['upload_path']          = './assets/img/product/';
-        $config['allowed_types']        = 'gif|jpg|jpeg|png';
-        $config['file_name']            = $this->input->post('product_name');
-        $config['overwrite']            = true;
-        $config['max_size']             = 5120; // 5MB
-        $config['max_width']            = 1920;
-        $config['max_height']           = 1080;
-
-        $this->load->library('upload', $config);
-
-        if ($this->upload->do_upload('picture')) {
-            return $this->upload->data("file_name");
-        }
-
-        return "default.jpg";
-    }
-
-    public function add_product()
-    {
-        $data = [
-            'product_name' => $this->input->post('product_name'),
-            'sub_id' => $this->input->post('sub_id'),
-            'length' => $this->input->post('length'),
-            'width' => $this->input->post('width'),
-            'height' => $this->input->post('height'),
-            'description' => $this->input->post('description'),
-            'price' => $this->input->post('price'),
-            'picture' => $this->_uploadImage()
-        ];
+        
         $this->db->insert('product', $data);
     }
 

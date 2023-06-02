@@ -45,7 +45,7 @@
             </tr>
             <tr>
               <td class="border ml-1">unicode</td>
-              <td class="border ml-1"><?= $data['sub_code'] ?>-<?= $data['mat_code'] ?>-<?= $data['sub_code'] ?></td>
+              <td class="border ml-1"><?= $data['sub_code'] ?>-<?= $data['mat_code'] ?>-<?= $data['product_code'] ?></td>
             </tr>
             <tr>
               <td class="border ml-1">Bahan / Material</td>

@@ -83,6 +83,14 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <select name="material_id" id="material_id" class="form-control">
+                        <option value="">Select Material</option>
+                        <?php foreach ($material as $data) : ?>
+                            <option value="<?= $data['mat_id']; ?>"><?= $data['material_name']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
                     <div class="row">
                         <div class="col">
                             <input type="text" class="form-control" id="length" name="length" placeholder="Length">
