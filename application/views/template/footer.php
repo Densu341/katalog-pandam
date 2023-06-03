@@ -1,3 +1,20 @@
+<style>
+  .form-control {
+    border: none;
+    border-bottom: 1px solid white;
+    border-radius: 0;
+    /* Untuk menghilangkan radius pada border bottom */
+    box-shadow: none;
+    /* Untuk menghilangkan shadow pada form input */
+  }
+
+  /* Optional: Gaya tambahan saat form input mendapatkan fokus */
+  .form-control:focus {
+    border-color: #157347;
+    box-shadow: none;
+    /* Untuk menghilangkan shadow saat form input aktif */
+  }
+</style>
 <footer class="text-center text-lg-start text-light bg-dark">
   <div class="container-fluid p-2">
     <div class="row">
@@ -10,24 +27,24 @@
           <div class="row">
             <div class="col-md-6">
               <div class="mb-3">
-                <input type="text" class="form-control rounded-pill" id="firstName" placeholder="Nama depan">
+                <input type="text" class="bg-dark form-control" id="firstName" placeholder="Nama depan">
               </div>
             </div>
             <div class="col-md-6">
               <div class="mb-3">
-                <input type="text" class="form-control rounded-pill" id="lastName" placeholder="Nama belakang">
+                <input type="text" class="bg-dark form-control" id="lastName" placeholder="Nama belakang">
               </div>
             </div>
           </div>
           <div class="row">
             <div class="col-md-8 me-2">
               <div class="mb-3">
-                <input type="email" class="form-control rounded-pill" id="email" placeholder="xxxxx@mail.com">
+                <input type="email" class="bg-dark form-control" id="email" placeholder="xxxxx@mail.com">
               </div>
             </div>
             <div class="col-md-2">
               <div class="mb-3">
-                <button type="submit" class="btn btn-success rounded-pill" data-mdb-ripple-color="dark">Success</button>
+                <button type="submit" class="btn btn-success rounded-md" data-mdb-ripple-color="dark">Submit</button>
               </div>
             </div>
           </div>

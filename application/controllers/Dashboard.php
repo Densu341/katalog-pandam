@@ -308,7 +308,7 @@ class Dashboard extends CI_Controller
 					'sub_id' => $sub_id,
 					'mat_id' => $mat_id
 				];
-				$subCode = $this->M_code->get($sub);
+				$subCode = $this->M_code->get($matCode);
 				// cek code material
 				if (!$subCode) {
 					// jika kode material tidak ada

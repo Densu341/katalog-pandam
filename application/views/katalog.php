@@ -3,7 +3,7 @@
        <?php foreach ($category as $c) : ?>
            <div class="row">
                <div class="col-12 text-center mb-4">
-                   <a href="#">
+                   <a href="<?= base_url() ?>katalog/product/">
                        <img src="<?= base_url('assets/img/category/') . $c['banner']; ?>" alt="" class="mx-auto img-fluid">
                    </a>
                </div>
