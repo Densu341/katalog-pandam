@@ -10,42 +10,38 @@ class M_category extends CI_Model
         return $query->result_array();
     }
 
-    public function get_category_by_id($category_id)
-    {
-        $this->db->select('*');
-        $this->db->from('category');
-        $this->db->where('category_id', $category_id);
-        $query = $this->db->get();
-        return $query->row_array();
-    }
-
     private function _uploadImage()
     {
-        $config['upload_path']          = './assets/img/category/';
-        $config['allowed_types']        = 'svg|gif|jpg|png|jpeg';
-        $config['file_name']            = $this->input->post('category_name');
-        $config['overwrite']            = true;
-        $config['max_size']             = 5120; // 10MB
-        $config['max_width']            = 1920;
-        $config['max_height']           = 1080;
+        $config['upload_path'] = './assets/img/category/';
+        $config['allowed_types'] = 'svg|gif|jpg|png|jpeg';
+        $config['file_name'] = $this->input->post('category_name');
+        $config['overwrite'] = true;
+        $config['max_size'] = 5120;
+        $config['max_width'] = 1080;
+        $config['max_height'] = 500;
 
         $this->load->library('upload', $config);
 
         if ($this->upload->do_upload('banner')) {
-            return $this->upload->data("file_name");
+            return $this->upload->data('file_name');
         }
 
-        return "default.jpg";
+        return 'default.jpg';
     }
 
     public function add_category()
     {
+        $categoryName = $this->input->post('category_name');
+        $banner = $this->_uploadImage();
+
         $data = [
-            'category_name' => $this->input->post('category_name'),
-            'banner' => $this->_uploadImage()
+            'category_name' => $categoryName,
+            'banner' => $banner
         ];
+
         $this->db->insert('category', $data);
     }
+
 
     public function get_cat_by_id($category_id)
     {

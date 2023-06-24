@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="/assets/fontawesome-free-5/css/all.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Katalog Pandam</title>
+  </head>
+
+  <style>
+    body {
+      background-color: #d9d9d9;
+      font-family: Poppins;
+    }
+    .img-fluid {
+      max-width: 100%;
+      height: auto;
+    }
+
+    @media (max-width: 768px) {
+      .img-fluid {
+        max-width: 75%;
+      }
+    }
+    @media (max-width: 576px) {
+      .img-fluid {
+        max-width: 50%;
+      }
+    }
+    @media (max-width: 375px) {
+      .img-fluid {
+        max-width: 25%;
+      }
+    }
+
+    .modal-open {
+      overflow: hidden;
+    }
+  </style>
+
+  <body class="container-fluid">
+    <header class="m-0 p-0">
+      <nav
+        class="navbar navbar-expand-lg navbar-dark"
+        style="background-color: #333333"
+      >
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <img
+              src="/assets/logo-pandam.png"
+              alt="logo"
+              width="60"
+              height="65"
+              class="d-inline-block align-text-top"
+            />
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarTogglerDemo02"
+            aria-controls="navbarTogglerDemo02"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <!-- link from left -->
+            <ul class="navbar-nav mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#"
+                  >Beranda</a
+                >
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Dampak</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="">Kontak</a>
+              </li>
+            </ul>
+            <!-- link from right -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link" href="#"><i class="far fa-heart"></i></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#"><i class="far fa-user"></i></a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <nav
+        style="
+          --bs-breadcrumb-divider: url(
+            &#34;data:image/svg + xml,
+            %3Csvgxmlns='http://www.w3.org/2000/svg'width='8'height='8'%3E%3Cpathd='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z'fill='currentColor'/%3E%3C/svg%3E&#34;
+          );
+          background-color: #d9d9d9;
+          font-weight: 200;
+        "
+        aria-label="breadcrumb"
+        class="px-4 py-2"
+      >
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Library</li>
+        </ol>
+      </nav>
+    </header>
+    <section class="container-fluid">
+      <div class="row align-items-center mb-2">
+        <div class="col-md-1 col-sm-1">
+          <img src="/assets/icon/Arrow - Left.svg" alt="" class="img-fluid" />
+        </div>
+        <div class="col-md-10 col-sm-10">
+          <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <div class="sub-image text-center">
+              <img
+                src="/assets/static/WIGUNA_ToteBags_mix_Shibori.jpeg"
+                alt=""
+                class="img-fluid"
+              />
+            </div>
+          </a>
+        </div>
+        <div class="col-md-1 col-sm-1">
+          <img src="/assets/icon/Arrow - Right.svg" alt="" class="img-fluid" />
+        </div>
+      </div>
+    </section>
+
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-1" style="background-color: #d9d9d9">
+                  <!-- icon sidebar -->
+                  <div class="row">
+                    <div class="col-md-12 text-center mt-3">
+                      <a href="#">
+                        <img
+                          src="/assets/logo-pandam-2.png"
+                          alt=""
+                          class="img-fluid"
+                        />
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-md-12 text-center">
+                      <a href="#">
+                        <i class="fas fa-home fa-lg" style="color: #333333"></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-md-12 text-center">
+                      <a href="#">
+                        <i
+                          class="far fa-heart fa-lg"
+                          style="color: #333333"
+                        ></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-md-12 text-center">
+                      <a href="#">
+                        <i
+                          class="fas fa-share-alt fa-lg"
+                          style="color: #333333"
+                        ></i>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-md-12 text-center">
+                      <a href="#">
+                        <i
+                          class="fas fa-file-download fa-lg"
+                          style="color: #333333"
+                        ></i>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="card">
+                    <img
+                      src="/assets/img/product/Purana_Handbag.jpeg"
+                      alt=""
+                      class="h-100 w-100"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <h2 class="text-center">The Name of Product</h2>
+                </div>
+                <div class="col-md-1">
+                  <img
+                    src="/assets/icon/Arrow - Right.svg"
+                    alt=""
+                    class="img-fluid"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer
+      style="background-color: #333333; font-weight: 100"
+      class="text-light"
+    >
+      <div class="container">
+        <div class="row">
+          <div class="col-3 py-2">
+            <h6 class="mb-4 text-light">
+              Jangan lewatkan <span class="fw-bold">penawaran eksklusif</span>,
+              rilis terbaru, dan inspirasi kami
+            </h6>
+            <form>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <input
+                      type="text"
+                      class="form-control border-start-0 border-top-0 border-end-0 border-bottom-1 border-light"
+                      style="background-color: #333333"
+                      id="firstName"
+                      placeholder="Nama depan"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <input
+                      type="text"
+                      class="form-control border-start-0 border-top-0 border-end-0 border-bottom-1 border-light"
+                      style="background-color: #333333"
+                      id="lastName"
+                      placeholder="Nama belakang"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-8 mx-0">
+                  <div class="mb-3">
+                    <input
+                      type="email"
+                      class="form-control border-start-0 border-top-0 border-end-0 border-bottom-1 border-light"
+                      style="background-color: #333333"
+                      id="email"
+                      placeholder="xxxxx@mail.com"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-2 mx-1 p-0">
+                  <div class="mb-3">
+                    <button
+                      type="submit"
+                      class="btn btn-success"
+                      data-mdb-ripple-color="dark"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">Products</h6>
+            <nav class="nav flex-column">
+              <a class="nav-link text-light" href="#">Bags</a>
+              <a class="nav-link text-light" href="#">Hampers</a>
+              <a class="nav-link text-light" href="#">Tumblers</a>
+              <a class="nav-link text-light" href="#">Binders</a>
+            </nav>
+          </div>
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+            <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+            <p>
+              <i class="fas fa-home mr-3"></i> Jl.Langenarjan Kidul No.7A,
+              Panembahan, Kraton, Kota Yogyakarta, Daerah Istimewa Yogyakarta
+              55131
+            </p>
+            <p>
+              <i class="fas fa-envelope mr-3"></i>
+              pandamadiwastrajanaloka@gmail.com
+            </p>
+            <p><i class="fas fa-phone mr-3"></i> +62 812-2773-357</p>
+          </div>
+          <div class="col-md-4 col-lg-2 col-xl-2 mx-auto mt-3">
+            <h6 class="text-uppercase mb-2 font-weight-bold">Marketplace</h6>
+            <div class="row">
+              <div class="col-md-3">
+                <a class="nav-link text-light" href="#"
+                  ><img
+                    src="/assets/tokopedia.png"
+                    alt="tokopedia"
+                    width="40px"
+                    height="40px"
+                /></a>
+              </div>
+              <div class="col-md-3">
+                <a class="nav-link text-light" href="#"
+                  ><img
+                    src="/assets/shopee-seeklogo.com.svg"
+                    alt="shopee"
+                    width="40px"
+                    height="40px"
+                /></a>
+              </div>
+              <div class="col-md-6">
+                <a class="nav-link text-light" href="#"
+                  ><img
+                    src="/assets/blibli-com-seeklogo.com.svg"
+                    alt="blibli"
+                    width="70px"
+                    height="50px"
+                /></a>
+              </div>
+            </div>
+            <h6 class="text-uppercase mb-2 font-weight-bold">Social Media</h6>
+            <div class="row">
+              <div class="col-md-3">
+                <a class="nav-link text-light" href="#"
+                  ><img
+                    src="/assets/ig.svg"
+                    alt="instagram"
+                    width="40px"
+                    height="40px"
+                /></a>
+              </div>
+              <div class="col-md-3">
+                <a class="nav-link text-light" href="#"
+                  ><img
+                    src="/assets/facebook.svg"
+                    alt="facebook"
+                    width="40px"
+                    height="40px"
+                /></a>
+              </div>
+              <div class="col-md-3">
+                <a class="nav-link text-light" href="#"
+                  ><img
+                    src="/assets/linkedin.svg"
+                    alt="linkedin"
+                    width="40px"
+                    height="40px"
+                /></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- divider -->
+      <hr />
+      <div class="copyright">
+        <div class="row">
+          <div class="col py-2 px-4">
+            <p class="text-light">© 2021 Pandam. All Rights Reserved.</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

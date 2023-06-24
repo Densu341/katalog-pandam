@@ -9,45 +9,47 @@ class M_subcategory extends CI_Model
         $this->db->select('*');
         $this->db->from('subcategory');
         $this->db->join('category', 'category.category_id = subcategory.category_id');
-        $query = $this->db->get();
-        return $query->result_array();
-    }
 
-    public function get_category()
-    {
-        $query = $this->db->get('category');
+        $query = $this->db->get();
         return $query->result_array();
     }
 
     private function _uploadImage()
     {
-        $config['upload_path']          = './assets/img/subcategory/';
-        $config['allowed_types']        = 'gif|jpg|png|jpeg';
-        $config['file_name']            = $this->input->post('subcategory_name');
-        $config['overwrite']            = true;
-        $config['max_size']             = 5120; // 5MB
-        $config['max_width']            = 1920;
-        $config['max_height']           = 1080;
+        $config['upload_path'] = './assets/img/subcategory/';
+        $config['allowed_types'] = 'svg|gif|jpg|png|jpeg';
+        $config['file_name'] = $this->input->post('subcategory_name');
+        $config['overwrite'] = true;
+        $config['max_size'] = 5120;
+        $config['max_width'] = 1080;
+        $config['max_height'] = 1080;
 
         $this->load->library('upload', $config);
 
         if ($this->upload->do_upload('image')) {
-            return $this->upload->data("file_name");
+            return $this->upload->data('file_name');
         }
 
-        return "default.jpg";
+        return 'default.jpg';
     }
 
     public function add_subcategory()
     {
+        $subcategoryname = $this->input->post('subcategory_name');
+        $category_id = $this->input->post('category_id');
+        $sub_code = $this->input->post('sub_code');
+        $image = $this->_uploadImage();
+
         $data = [
-            'category_id' => $this->input->post('category_id'),
-            'subcategory_name' => $this->input->post('subcategory_name'),
-            'sub_code' => $this->input->post('sub_code'),
-            'image' => $this->_uploadImage()
+            'subcategory_name' => $subcategoryname,
+            'category_id' => $category_id,
+            'sub_code' => $sub_code,
+            'image' => $image
         ];
+
         $this->db->insert('subcategory', $data);
     }
+
 
     public function get_sub_by_id($sub_id)
     {
