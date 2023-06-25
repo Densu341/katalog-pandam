@@ -10,35 +10,8 @@ class M_category extends CI_Model
         return $query->result_array();
     }
 
-    private function _uploadImage()
+    public function add_category($data)
     {
-        $config['upload_path'] = './assets/img/category/';
-        $config['allowed_types'] = 'svg|gif|jpg|png|jpeg';
-        $config['file_name'] = $this->input->post('category_name');
-        $config['overwrite'] = true;
-        $config['max_size'] = 5120;
-        $config['max_width'] = 1080;
-        $config['max_height'] = 500;
-
-        $this->load->library('upload', $config);
-
-        if ($this->upload->do_upload('banner')) {
-            return $this->upload->data('file_name');
-        }
-
-        return 'default.jpg';
-    }
-
-    public function add_category()
-    {
-        $categoryName = $this->input->post('category_name');
-        $banner = $this->_uploadImage();
-
-        $data = [
-            'category_name' => $categoryName,
-            'banner' => $banner
-        ];
-
         $this->db->insert('category', $data);
     }
 

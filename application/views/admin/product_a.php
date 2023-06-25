@@ -137,6 +137,7 @@
                 </div>
                 <?= form_open_multipart('dashboard/editproduct/' . $p['product_id']); ?>
                 <input type="hidden" name="product_id" value="<?= $p['product_id']; ?>">
+                <input type="hidden" name="product_code" value="<?= $p['product_code']; ?>">
                 <div class="modal-body">
                     <div class="form-group">
                         <input type="text" class="form-control" id="product_name" name="product_name" placeholder="Product Name" value="<?= $p['product_name']; ?>">
@@ -149,6 +150,18 @@
                                     <option value="<?= $p['sub_id']; ?>" selected><?= $p['subcategory_name']; ?></option>
                                 <?php else : ?>
                                     <option value="<?= $s['sub_id']; ?>"><?= $s['subcategory_name']; ?></option>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="material_id" id="material_id" class="form-control">
+                            <option value="">Select Material</option>
+                            <?php foreach ($material as $data) : ?>
+                                <?php if ($data['mat_id'] == $p['mat_id']) : ?>
+                                    <option value="<?= $p['mat_id']; ?>" selected><?= $p['material_name']; ?></option>
+                                <?php else : ?>
+                                    <option value="<?= $data['mat_id']; ?>"><?= $data['material_name']; ?></option>
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         </select>

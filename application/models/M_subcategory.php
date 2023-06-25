@@ -33,20 +33,8 @@ class M_subcategory extends CI_Model
         return 'default.jpg';
     }
 
-    public function add_subcategory()
+    public function add_subcategory($data)
     {
-        $subcategoryname = $this->input->post('subcategory_name');
-        $category_id = $this->input->post('category_id');
-        $sub_code = $this->input->post('sub_code');
-        $image = $this->_uploadImage();
-
-        $data = [
-            'subcategory_name' => $subcategoryname,
-            'category_id' => $category_id,
-            'sub_code' => $sub_code,
-            'image' => $image
-        ];
-
         $this->db->insert('subcategory', $data);
     }
 

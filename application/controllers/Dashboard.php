@@ -34,9 +34,6 @@ class Dashboard extends CI_Controller
 		if ($this->form_validation->run() == false) {
 			$this->load->view('admin/__header', $data);
 			$this->load->view('admin/editprofile_a', $data);
-			// var_dump($data['user']);
-			// var_dump($this->db->last_query());
-			// die;
 			$this->load->view('admin/__footer');
 		} else {
 			$username = $this->input->post('username');
@@ -57,14 +54,16 @@ class Dashboard extends CI_Controller
 					$new_image = $this->upload->data('file_name');
 					$this->db->set('image', $new_image);
 				} else {
-					echo $this->upload->display_errors();
+					$error_message = $this->upload->display_errors();
+					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $error_message . '</div>');
+					redirect('dashboard/editprofile');
 				}
 			}
 			$this->db->set('username', $username);
 			$this->db->where('email', $email);
 			$this->db->update('user');
 			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Your profile has been updated!</div>');
-			redirect('dashboard');
+			redirect('dashboard/editprofile');
 		}
 	}
 
@@ -134,8 +133,33 @@ class Dashboard extends CI_Controller
 			$this->load->view('admin/category_a', $data);
 			$this->load->view('admin/__footer');
 		} else {
-			$this->M_category->add_category();
-			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New category added!</div>');
+			$category_name = $this->input->post('category_name');
+			// cek jika ada gambar yang akan diupload
+			$upload_image = $_FILES['banner']['name'];
+
+			if ($upload_image) {
+				$config['allowed_types'] = 'svg|gif|jpg|png|jpeg';
+				$config['max_size']     = '5120';
+				$config['max_width'] = '1080';
+				$config['max_height'] = '500';
+				$config['overwrite'] = true;
+				$config['upload_path'] = './assets/img/category/';
+				$config['file_name'] = $category_name;
+				$this->load->library('upload', $config);
+				if ($this->upload->do_upload('banner')) {
+					$banner = $this->upload->data('file_name');
+					$this->db->set('banner', $banner);
+				} else {
+					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $this->upload->display_errors() . '</div>');
+					redirect('dashboard/addcategory');
+				}
+			}
+			$data = [
+				'category_name' => $category_name,
+				'banner' => $banner
+			];
+			$this->M_category->add_category($data);
+			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New Category added!</div>');
 			redirect('dashboard/category');
 		}
 	}
@@ -166,6 +190,7 @@ class Dashboard extends CI_Controller
 				$config['max_size'] = '5120';
 				$config['max_width'] = '1080';
 				$config['max_height'] = '500';
+				$config['overwrite'] = true;
 				$config['upload_path'] = './assets/img/category/';
 				$config['file_name'] = $category_name; // Menggunakan category_name sebagai nama file
 
@@ -241,7 +266,40 @@ class Dashboard extends CI_Controller
 			$this->load->view('admin/subcategory_a', $data);
 			$this->load->view('admin/__footer');
 		} else {
-			$this->M_subcategory->add_subcategory();
+			$subcategory_name = $this->input->post('subcategory_name');
+			$category_id = $this->input->post('category_id');
+			$sub_code = $this->input->post('sub_code');
+
+			// Cek jika ada gambar yang akan diupload
+			$upload_image = $_FILES['image']['name'];
+
+			if ($upload_image) {
+				$config['allowed_types'] = 'svg|gif|jpg|png|jpeg';
+				$config['max_size'] = '5120';
+				$config['max_width'] = '1080';
+				$config['max_height'] = '1080';
+				$config['overwrite'] = true;
+				$config['upload_path'] = './assets/img/subcategory/';
+				$config['file_name'] = $subcategory_name; // Menggunakan category_name sebagai nama file
+
+				$this->load->library('upload', $config);
+
+				if ($this->upload->do_upload('image')) {
+					$new_image = $this->upload->data('file_name');
+					$this->db->set('image', $new_image);
+				} else {
+					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $this->upload->display_errors() . '</div>');
+					redirect('dashboard/addsubcategory');
+				}
+			}
+
+			$data = [
+				'subcategory_name' => $subcategory_name,
+				'category_id' => $category_id,
+				'sub_code' => $sub_code,
+				'image' => $new_image
+			];
+			$this->M_subcategory->add_subcategory($data);
 			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">New subcategory added!</div>');
 			redirect('dashboard/subcategory');
 		}
@@ -274,7 +332,7 @@ class Dashboard extends CI_Controller
 
 			if ($upload_image) {
 				$config['upload_path'] = './assets/img/subcategory/';
-				$config['allowed_types'] = 'gif|jpg|png|jpeg';
+				$config['allowed_types'] = 'svg|gif|jpg|png|jpeg';
 				$config['file_name'] = $subcategory_name;
 				$config['overwrite'] = true;
 				$config['max_size'] = 5120; // 5MB
@@ -331,7 +389,8 @@ class Dashboard extends CI_Controller
 
 		// ambil data dari database
 		$data['product'] = $this->M_product->get_product();
-		$data['subcategory'] = $this->M_product->get_subcategory();
+		$data['subcategory'] = $this->M_subcategory->get_subcategory();
+		$data['category'] = $this->M_category->get_category();
 		$data['material'] = $this->M_material->get_material();
 
 		// load view 
@@ -356,13 +415,15 @@ class Dashboard extends CI_Controller
 		if ($this->form_validation->run() == false) {
 			$data['title'] = 'Data Product';
 			$data['product'] = $this->M_product->get_product();
-			$data['subcategory'] = $this->M_product->get_subcategory();
+			$data['subcategory'] = $this->M_subcategory->get_subcategory();
+			$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 
 			$this->load->view('admin/__header', $data);
 			$this->load->view('admin/product_a', $data);
 			$this->load->view('admin/__footer');
 		} else {
 			// persiapkan data
+			$product_name = $this->input->post('product_name');
 			$sub_id = $this->input->post('sub_id');
 			$mat_id = $this->input->post('material_id');
 
@@ -393,13 +454,29 @@ class Dashboard extends CI_Controller
 				}
 			}
 
+			// cek jika ada gambar yang akan diupload
+			$upload_image = $_FILES['picture']['name'];
 
-			// ambil kode product
-			//  kode product + 1
-			// masukan ke tabel code
-			// code material tidak ada 
-			// masukan data sub code - mat code - material code (1)
-			// masukan data sub code - mat code - material code (1)
+			if ($upload_image) {
+				$config['allowed_types'] = 'svg|gif|jpg|png|jpeg';
+				$config['max_size'] = '5120';
+				$config['max_width'] = '1080';
+				$config['max_height'] = '1080';
+				$config['overwrite'] = true;
+				$config['file_name'] = $product_name;
+				$config['upload_path'] = './assets/img/product/';
+
+				$this->load->library('upload', $config);
+
+				if ($this->upload->do_upload('picture')) {
+					$picture = $this->upload->data('file_name');
+					$this->db->set('picture', $picture);
+				} else {
+					$error_message = $this->upload->display_errors();
+					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $error_message . '</div>');
+					redirect('dashboard/product');
+				}
+			}
 
 			$dataProduct = [
 				'product_name' => $this->input->post('product_name'),
@@ -411,7 +488,7 @@ class Dashboard extends CI_Controller
 				'product_code' => $product_code,
 				'description' => $this->input->post('description'),
 				'price' => $this->input->post('price'),
-				'picture' => $this->_uploadImage()
+				'picture' => $picture,
 			];
 
 			// insert ke tabel product
@@ -426,78 +503,119 @@ class Dashboard extends CI_Controller
 		}
 	}
 
-	public function editproduct()
+	public function editproduct($product_id)
 	{
-		$product_id = $this->uri->segment(3);
-		$data['title'] = 'Data Product';
-		$data['product'] = $this->M_product->get_product();
-		$data['subcategory'] = $this->M_product->get_subcategory();
-
-		$this->form_validation->set_rules('product_name', 'Product', 'required|trim');
+		$this->form_validation->set_rules('product_name', 'Product', 'required|trim', [
+			'required' => 'The product name field is required.'
+		]);
 		$this->form_validation->set_rules('length', 'Length', 'required|trim');
 		$this->form_validation->set_rules('width', 'Width', 'required|trim');
 		$this->form_validation->set_rules('height', 'Height', 'required|trim');
 		$this->form_validation->set_rules('price', 'Price', 'required|trim');
 		$this->form_validation->set_rules('description', 'Description', 'required|trim');
 		$this->form_validation->set_rules('sub_id', 'Subcategory', 'required|trim');
+		$this->form_validation->set_rules('material_id', 'Material', 'required|trim');
 
 		if ($this->form_validation->run() == false) {
+			$data['title'] = 'Edit Product';
+			$data['product'] = $this->M_product->get_product_by_id($product_id);
+			$data['subcategory'] = $this->M_subcategory->get_subcategory();
+			$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+
 			$this->load->view('admin/__header', $data);
 			$this->load->view('admin/product_a', $data);
 			$this->load->view('admin/__footer');
 		} else {
+			// Persiapkan data
 			$product_name = $this->input->post('product_name');
-			$length = $this->input->post('length');
-			$width = $this->input->post('width');
-			$height = $this->input->post('height');
-			$price = $this->input->post('price');
-			$description = $this->input->post('description');
 			$sub_id = $this->input->post('sub_id');
-			$product_id = $this->input->post('product_id');
-			$data['product'] = $this->M_product->get_product_by_id($product_id);
+			$mat_id = $this->input->post('material_id');
 
-			// cek jika ada gambar yang akan diupload
+			// Cek tabel kode
+			$sub = [
+				'sub_id' => $sub_id
+			];
+			$subCode = $this->M_code->get($sub);
+
+			if (!$subCode) {
+				// Jika data tidak ada
+				$product_code = '001';
+			} else {
+				// Jika data ada
+				$matCode = [
+					'sub_id' => $sub_id,
+					'mat_id' => $mat_id
+				];
+				$subCode = $this->M_code->get($matCode);
+				// Cek code material
+				if (!$subCode) {
+					// Jika kode material tidak ada
+					$product_code = '001';
+				} else {
+					// Jika kode material ada
+					$number = $subCode[0]['product_code'] + 1;
+					$product_code = sprintf('%03d', $number);
+				}
+			}
+
+			// Cek jika ada gambar yang akan diupload
 			$upload_image = $_FILES['picture']['name'];
 
 			if ($upload_image) {
-				$config['allowed_types'] = 'gif|jpg|png';
-				$config['max_size']     = '5120';
-				$config['max_widht']	= '1920';
-				$config['max_height']	= '1080';
+				$config['allowed_types'] = 'svg|gif|jpg|png|jpeg';
+				$config['max_size'] = '5120';
+				$config['max_width'] = '1080';
+				$config['max_height'] = '1080';
+				$config['overwrite'] = true;
+				$config['file_name'] = $product_name;
 				$config['upload_path'] = './assets/img/product/';
 
 				$this->load->library('upload', $config);
 
 				if ($this->upload->do_upload('picture')) {
-					$old_image = $data['product']['picture'];
-					if ($old_image != 'default.jpg') {
-						unlink(FCPATH . 'assets/img/product/' . $old_image);
-					}
-					$new_image = $this->upload->data('file_name');
-					$this->db->set('picture', $new_image);
+					$picture = $this->upload->data('file_name');
 				} else {
-					echo $this->upload->display_errors();
+					$error_message = $this->upload->display_errors();
+					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $error_message . '</div>');
+					redirect('dashboard/product');
 				}
 			}
-			$this->db->set('product_name', $product_name);
-			$this->db->set('length', $length);
-			$this->db->set('width', $width);
-			$this->db->set('height', $height);
-			$this->db->set('price', $price);
-			$this->db->set('description', $description);
-			$this->db->set('sub_id', $sub_id);
-			$this->db->where('product_id', $product_id);
-			$this->db->update('product');
 
-			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has been updated!</div>');
+			$data = [
+				'product_name' => $this->input->post('product_name'),
+				'sub_id' => $sub_id,
+				'mat_id' => $mat_id,
+				'length' => $this->input->post('length'),
+				'width' => $this->input->post('width'),
+				'height' => $this->input->post('height'),
+				'product_code' => $product_code,
+				'description' => $this->input->post('description'),
+				'price' => $this->input->post('price'),
+				'picture' => $this->input->post('picture'),
+			];
+
+			// Update produk di tabel product
+			$this->M_product->update_product($product_id, $data);
+
+			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product updated successfully!</div>');
 			redirect('dashboard/product');
 		}
 	}
 
-	public function deleteproduct()
+
+
+	public function deleteproduct($product_id)
 	{
-		$product_id = $this->input->post('product_id');
+		$product = $this->M_product->get_product_by_id($product_id);
 		$this->M_product->delete_product($product_id);
+
+		if ($product['picture'] != 'default.jpg') {
+			$picture_path = './assets/img/product/' . $product['picture'];
+			if (file_exists($picture_path)) {
+				unlink($picture_path);
+			}
+		}
+
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has been deleted!</div>');
 		redirect('dashboard/product');
 	}
@@ -567,25 +685,5 @@ class Dashboard extends CI_Controller
 		$this->M_material->delete_material($mat_id);
 		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Material has been deleted!</div>');
 		redirect('dashboard/material');
-	}
-
-	// upload image function
-	private function _uploadImage()
-	{
-		$config['upload_path']          = './assets/img/product/';
-		$config['allowed_types']        = 'gif|jpg|jpeg|png';
-		$config['file_name']            = $this->input->post('product_name');
-		$config['overwrite']            = true;
-		$config['max_size']             = 5120; // 5MB
-		$config['max_width']            = 1920;
-		$config['max_height']           = 1080;
-
-		$this->load->library('upload', $config);
-
-		if ($this->upload->do_upload('picture')) {
-			return $this->upload->data("file_name");
-		}
-
-		return "default.jpg";
 	}
 }
