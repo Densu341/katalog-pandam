@@ -10,23 +10,14 @@ class M_product extends CI_Model
         $this->db->from('product');
         $this->db->join('subcategory', 'subcategory.sub_id = product.sub_id');
         $this->db->join('category', 'category.category_id = subcategory.category_id');
+        $this->db->join('material', 'material.mat_id = product.mat_id');
         $query = $this->db->get();
         return $query->result_array();
     }
 
-    public function get_category()
+    public function add_product($data)
     {
-        $query = $this->db->get('category');
-        return $query->result_array();
-    }
-
-    public function get_subcategory()
-    {
-        $this->db->select('*');
-        $this->db->from('subcategory');
-        $this->db->join('category', 'category.category_id = subcategory.category_id');
-        $query = $this->db->get();
-        return $query->result_array();
+        $this->db->insert('product', $data);
     }
 
     public function get_product_by_id($product_id)
@@ -35,16 +26,18 @@ class M_product extends CI_Model
         $this->db->from('product');
         $this->db->join('subcategory', 'subcategory.sub_id = product.sub_id');
         $this->db->join('category', 'category.category_id = subcategory.category_id');
+        $this->db->join('material', 'material.mat_id = product.mat_id');
         $this->db->where('product_id', $product_id);
         $query = $this->db->get();
         return $query->row_array();
     }
 
-    public function add_product($data)
+    public function update_product($data)
     {
-        
-        $this->db->insert('product', $data);
+        $this->db->where('product_id', $this->input->post('product_id'));
+        $this->db->update('product', $data);
     }
+
 
     public function delete_product()
     {
@@ -52,7 +45,14 @@ class M_product extends CI_Model
         $this->db->delete('product');
     }
 
-    // ambil data dari tabel code
-
-    // add data ke tabel code
+    public function getProductsByCategory($category_id)
+    {
+        $this->db->select('*');
+        $this->db->from('product');
+        $this->db->join('subcategory', 'subcategory.sub_id = product.sub_id');
+        $this->db->join('category', 'category.category_id = subcategory.category_id');
+        $this->db->where('category.category_id', $category_id);
+        $query = $this->db->get();
+        return $query->result_array();
+    }
 }

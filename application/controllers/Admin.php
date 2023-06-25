@@ -3,19 +3,19 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Admin extends CI_Controller
 {
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 		$this->load->model('M_login');
 	}
 
-	function index()
+	public function index()
 	{
 		$data['title'] = 'Login Page';
 		$this->load->view('login', $data);
 	}
 
-	function masuk()
+	public function masuk()
 	{
 		$username = $this->input->post('username');
 		$password = $this->input->post('password');
@@ -38,7 +38,7 @@ class Admin extends CI_Controller
 		}
 	}
 
-	function logout()
+	public function logout()
 	{
 		$this->session->sess_destroy();
 		redirect(base_url('admin'));

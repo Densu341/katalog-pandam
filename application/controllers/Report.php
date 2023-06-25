@@ -20,6 +20,8 @@ class Report extends CI_Controller
     $this->load->library('pdf');
     // create pdf
     $data['produk'] = $this->M_report->get_all_report();
+    // var_dump($data['produk']);
+    // die;
 
     $this->pdf->setPaper('A4', 'potrait');
     $this->pdf->filename = "Laporan_Data_Produk.pdf";
@@ -27,7 +29,7 @@ class Report extends CI_Controller
     $this->pdf->set_option('defaultMediaType', 'all');
     $this->pdf->set_option('isFontSubsettingEnabled', true);
     $this->pdf->set_option('isPhpEnabled', true);
-    $this->pdf->load_view('pdf_report', $data);
+    $this->pdf->load_view('admin/pdf_report', $data);
     // $this->load->view('pdf_report', $data);
   }
 }
