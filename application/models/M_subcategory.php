@@ -41,14 +41,13 @@ class M_subcategory extends CI_Model
     }
 
 
-    public function get_sub_by_id($sub_id)
+    public function get_sub_by_id($category_id)
     {
         $this->db->select('*');
         $this->db->from('subcategory');
-        $this->db->join('category', 'category.category_id = subcategory.category_id');
-        $this->db->where('sub_id', $sub_id);
+        $this->db->where('category_id', $category_id);
         $query = $this->db->get();
-        return $query->row_array();
+        return $query->result_array();
     }
 
     public function delete_subcategory($sub_id)

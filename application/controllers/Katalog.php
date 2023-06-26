@@ -17,10 +17,23 @@ class Katalog extends CI_Controller
 		$data['subcategory'] = $this->M_subcategory->get_subcategory();
 		$data['title'] = "Katalog Pandam";
 
-		// var_dump($data['category']);
-		// die;
 		$this->load->view('user/header', $data);
 		$this->load->view('user/katalog', $data);
+		$this->load->view('user/footer');
+	}
+
+	function show_subCategory()
+	{
+		$data['title'] = "Sub Kategory";
+		
+		// ambil data url 
+		$category_id = $this->uri->segment('3');
+
+		// ambil data by category_id
+		$data['product'] = $this->M_subcategory->get_sub_by_id($category_id);
+
+		$this->load->view('user/header', $data);
+		$this->load->view('user/subcategory', $data);
 		$this->load->view('user/footer');
 	}
 
