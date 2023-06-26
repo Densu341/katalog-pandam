@@ -1,19 +1,19 @@
 <style>
-  .form-control {
-    border: none;
-    border-bottom: 1px solid white;
-    border-radius: 0;
-    /* Untuk menghilangkan radius pada border bottom */
-    box-shadow: none;
-    /* Untuk menghilangkan shadow pada form input */
-  }
+.form-control {
+  border: none;
+  border-bottom: 1px solid white;
+  border-radius: 0;
+  /* Untuk menghilangkan radius pada border bottom */
+  box-shadow: none;
+  /* Untuk menghilangkan shadow pada form input */
+}
 
-  /* Optional: Gaya tambahan saat form input mendapatkan fokus */
-  .form-control:focus {
-    border-color: #157347;
-    box-shadow: none;
-    /* Untuk menghilangkan shadow saat form input aktif */
-  }
+/* Optional: Gaya tambahan saat form input mendapatkan fokus */
+.form-control:focus {
+  border-color: #157347;
+  box-shadow: none;
+  /* Untuk menghilangkan shadow saat form input aktif */
+}
 </style>
 <footer class="text-center text-lg-start text-light bg-dark">
   <div class="container-fluid p-2">
@@ -75,18 +75,22 @@
       <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
         <h6 class="text-uppercase mb-2 font-weight-bold">Marketplace</h6>
         <nav class="nav flex-column">
-          <a class="nav-link text-light" href="#"><img src="<?= base_url() ?>assets/tokopedia.png" alt="tokopedia" width="40px" height="40px"></a>
+          <a class="nav-link text-light" href="#"><img src="<?= base_url() ?>assets/tokopedia.png" alt="tokopedia"
+              width="40px" height="40px"></a>
         </nav>
         <h6 class="text-uppercase mb-2 font-weight-bold">Social Media</h6>
         <div class="row">
           <div class="col-md-3">
-            <a class="nav-link text-light" href="#"><img src="<?= base_url() ?>assets/ig.svg" alt="instagram" width="40px" height="40px"></a>
+            <a class="nav-link text-light" href="#"><img src="<?= base_url() ?>assets/ig.svg" alt="instagram"
+                width="40px" height="40px"></a>
           </div>
           <div class="col-md-3">
-            <a class="nav-link text-light" href="#"><img src="<?= base_url() ?>assets/facebook.svg" alt="facebook" width="40px" height="40px"></a>
+            <a class="nav-link text-light" href="#"><img src="<?= base_url() ?>assets/facebook.svg" alt="facebook"
+                width="40px" height="40px"></a>
           </div>
           <div class="col-md-3">
-            <a class="nav-link text-light" href="#"><img src="<?= base_url() ?>assets/linkedin.svg" alt="linkedin" width="40px" height="40px"></a>
+            <a class="nav-link text-light" href="#"><img src="<?= base_url() ?>assets/linkedin.svg" alt="linkedin"
+                width="40px" height="40px"></a>
           </div>
         </div>
       </div>
@@ -102,7 +106,8 @@
   <!-- Copyright -->
 </footer>
 <!-- End of .container -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>
 
