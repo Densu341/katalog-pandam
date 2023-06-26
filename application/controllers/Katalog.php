@@ -16,6 +16,9 @@ class Katalog extends CI_Controller
 		$data['category'] = $this->M_category->get_category();
 		$data['subcategory'] = $this->M_subcategory->get_subcategory();
 		$data['title'] = "Katalog Pandam";
+
+		// var_dump($data['category']);
+		// die;
 		$this->load->view('user/header', $data);
 		$this->load->view('user/katalog', $data);
 		$this->load->view('user/footer');

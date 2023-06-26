@@ -9,6 +9,8 @@ class M_subcategory extends CI_Model
         $this->db->select('*');
         $this->db->from('subcategory');
         $this->db->join('category', 'category.category_id = subcategory.category_id');
+        $this->db->order_by("category.category_id", "desc");
+        $this->db->limit(4);
 
         $query = $this->db->get();
         return $query->result_array();
