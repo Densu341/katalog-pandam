@@ -30,4 +30,11 @@ class M_category extends CI_Model
         $this->db->where('category_id', $category_id);
         $this->db->delete('category');
     }
+
+    // count category
+    public function count_category()
+    {
+        $query = $this->db->get('category');
+        return $query->num_rows();
+    }
 }

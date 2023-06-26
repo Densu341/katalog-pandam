@@ -11,6 +11,7 @@ class Dashboard extends CI_Controller
 		$this->load->model('M_product');
 		$this->load->model('M_material');
 		$this->load->model('M_code');
+		$this->load->model('M_visitor');
 
 		if ($this->session->userdata('status') != "admin") {
 			redirect(base_url("admin"));
@@ -21,8 +22,13 @@ class Dashboard extends CI_Controller
 	{
 		$data['title'] = 'Dashboard';
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		$visitors = $this->M_visitor->get_total_visitors();
+		$category = $this->M_category->count_category();
+
+		$data['visitors'] = $visitors;
+		$data['category'] = $category;
 		$this->load->view('admin/__header', $data);
-		$this->load->view('admin/dashboard_a');
+		$this->load->view('admin/dashboard_a', $data);
 		$this->load->view('admin/__footer');
 	}
 
@@ -490,7 +496,6 @@ class Dashboard extends CI_Controller
 				'price' => $this->input->post('price'),
 				'picture' => $picture,
 			];
-
 			// insert ke tabel product
 			$this->M_product->add_product($dataProduct);
 
@@ -503,104 +508,91 @@ class Dashboard extends CI_Controller
 		}
 	}
 
-	public function editproduct($product_id)
+	public function editproduct()
 	{
-		$this->form_validation->set_rules('product_name', 'Product', 'required|trim', [
-			'required' => 'The product name field is required.'
-		]);
-		$this->form_validation->set_rules('length', 'Length', 'required|trim');
-		$this->form_validation->set_rules('width', 'Width', 'required|trim');
-		$this->form_validation->set_rules('height', 'Height', 'required|trim');
-		$this->form_validation->set_rules('price', 'Price', 'required|trim');
-		$this->form_validation->set_rules('description', 'Description', 'required|trim');
-		$this->form_validation->set_rules('sub_id', 'Subcategory', 'required|trim');
-		$this->form_validation->set_rules('material_id', 'Material', 'required|trim');
+		$product_id = $this->input->post('product_id');
 
-		if ($this->form_validation->run() == false) {
-			$data['title'] = 'Edit Product';
-			$data['product'] = $this->M_product->get_product_by_id($product_id);
-			$data['subcategory'] = $this->M_subcategory->get_subcategory();
-			$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
+		// get product data
+		$product = $this->M_product->get_product_by_id($product_id);
 
-			$this->load->view('admin/__header', $data);
-			$this->load->view('admin/product_a', $data);
-			$this->load->view('admin/__footer');
+		// persiapkan data
+		$product_name = $this->input->post('product_name');
+		$sub_id = $this->input->post('sub_id');
+		$mat_id = $this->input->post('material_id');
+
+		// cek tabel kode
+		$sub = [
+			'sub_id' => $sub_id
+		];
+		$subCode = $this->M_code->get($sub);
+
+		if (!$subCode) {
+			// jika data tidak ada
+			$product_code = '001';
 		} else {
-			// Persiapkan data
-			$product_name = $this->input->post('product_name');
-			$sub_id = $this->input->post('sub_id');
-			$mat_id = $this->input->post('material_id');
-
-			// Cek tabel kode
-			$sub = [
-				'sub_id' => $sub_id
+			// jika data ada
+			$matCode = [
+				'sub_id' => $sub_id,
+				'mat_id' => $mat_id
 			];
-			$subCode = $this->M_code->get($sub);
-
+			$subCode = $this->M_code->get($matCode);
+			// cek code material
 			if (!$subCode) {
-				// Jika data tidak ada
+				// jika kode material tidak ada
 				$product_code = '001';
 			} else {
-				// Jika data ada
-				$matCode = [
-					'sub_id' => $sub_id,
-					'mat_id' => $mat_id
-				];
-				$subCode = $this->M_code->get($matCode);
-				// Cek code material
-				if (!$subCode) {
-					// Jika kode material tidak ada
-					$product_code = '001';
-				} else {
-					// Jika kode material ada
-					$number = $subCode[0]['product_code'] + 1;
-					$product_code = sprintf('%03d', $number);
-				}
+				// jika kode material ada
+				$number = $subCode[0]['product_code'] + 1;
+				$product_code = sprintf('%03d', $number);
 			}
-
-			// Cek jika ada gambar yang akan diupload
-			$upload_image = $_FILES['picture']['name'];
-
-			if ($upload_image) {
-				$config['allowed_types'] = 'svg|gif|jpg|png|jpeg';
-				$config['max_size'] = '5120';
-				$config['max_width'] = '1080';
-				$config['max_height'] = '1080';
-				$config['overwrite'] = true;
-				$config['file_name'] = $product_name;
-				$config['upload_path'] = './assets/img/product/';
-
-				$this->load->library('upload', $config);
-
-				if ($this->upload->do_upload('picture')) {
-					$picture = $this->upload->data('file_name');
-				} else {
-					$error_message = $this->upload->display_errors();
-					$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $error_message . '</div>');
-					redirect('dashboard/product');
-				}
-			}
-
-			$data = [
-				'product_name' => $this->input->post('product_name'),
-				'sub_id' => $sub_id,
-				'mat_id' => $mat_id,
-				'length' => $this->input->post('length'),
-				'width' => $this->input->post('width'),
-				'height' => $this->input->post('height'),
-				'product_code' => $product_code,
-				'description' => $this->input->post('description'),
-				'price' => $this->input->post('price'),
-				'picture' => $this->input->post('picture'),
-			];
-
-			// Update produk di tabel product
-			$this->M_product->update_product($product_id, $data);
-
-			$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product updated successfully!</div>');
-			redirect('dashboard/product');
 		}
+
+		// cek jika ada gambar yang akan diupload
+		$upload_image = $_FILES['picture']['name'];
+
+		if ($upload_image) {
+			$config['allowed_types'] = 'svg|gif|jpg|png|jpeg';
+			$config['max_size'] = '5120';
+			$config['max_width'] = '1080';
+			$config['max_height'] = '1080';
+			$config['overwrite'] = true;
+			$config['file_name'] = $product_name;
+			$config['upload_path'] = './assets/img/product/';
+
+			$this->load->library('upload', $config);
+
+			if ($this->upload->do_upload('picture')) {
+				$picture = $this->upload->data('file_name');
+				$this->db->set('picture', $picture);
+			} else {
+				$error_message = $this->upload->display_errors();
+				$this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $error_message . '</div>');
+				redirect('dashboard/product');
+			}
+		} else {
+			$picture = $product['picture'];
+		}
+
+		$dataProduct = [
+			'product_name' => $product_name,
+			'sub_id' => $sub_id,
+			'mat_id' => $mat_id,
+			'product_code' => $product['product_code'],
+			'description' => $this->input->post('description'),
+			'price' => $this->input->post('price'),
+		];
+
+		if ($product['picture'] != $picture) {
+			unlink('./assets/img/product/' . $product['picture']);
+		}
+
+		$this->db->where('product_id', $product_id);
+		$this->db->update('product', $dataProduct);
+
+		$this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Product has been updated!</div>');
+		redirect('dashboard/product');
 	}
+
 
 
 

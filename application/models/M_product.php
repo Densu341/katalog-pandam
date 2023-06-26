@@ -32,13 +32,6 @@ class M_product extends CI_Model
         return $query->row_array();
     }
 
-    public function update_product($data)
-    {
-        $this->db->where('product_id', $this->input->post('product_id'));
-        $this->db->update('product', $data);
-    }
-
-
     public function delete_product()
     {
         $this->db->where('product_id', $this->input->post('product_id'));
