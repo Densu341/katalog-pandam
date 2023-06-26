@@ -9,6 +9,7 @@ class Katalog extends CI_Controller
 		$this->load->model('M_category');
 		$this->load->model('M_subcategory');
 		$this->load->model('M_product');
+		$this->load->model('M_visitor');
 	}
 
 	function index()
@@ -16,6 +17,10 @@ class Katalog extends CI_Controller
 		$data['category'] = $this->M_category->get_category();
 		$data['subcategory'] = $this->M_subcategory->get_subcategory();
 		$data['title'] = "Katalog Pandam";
+
+		$ip = $this->input->ip_address();
+		$this->M_visitor->save_visitor($ip);
+
 		$this->load->view('user/header', $data);
 		$this->load->view('user/katalog', $data);
 		$this->load->view('user/footer');
