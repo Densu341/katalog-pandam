@@ -24,9 +24,13 @@ class Dashboard extends CI_Controller
 		$data['user'] = $this->db->get_where('user', ['email' => $this->session->userdata('email')])->row_array();
 		$visitors = $this->M_visitor->get_total_visitors();
 		$category = $this->M_category->count_category();
+		$subcategory = $this->M_subcategory->count_subcategory();
+		$product = $this->M_product->count_product();
 
 		$data['visitors'] = $visitors;
 		$data['category'] = $category;
+		$data['subcategory'] = $subcategory;
+		$data['product'] = $product;
 		$this->load->view('admin/__header', $data);
 		$this->load->view('admin/dashboard_a', $data);
 		$this->load->view('admin/__footer');

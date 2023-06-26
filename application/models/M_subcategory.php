@@ -55,4 +55,11 @@ class M_subcategory extends CI_Model
         $this->db->where('sub_id', $sub_id);
         $this->db->delete('subcategory');
     }
+
+    // count subcategory
+    public function count_subcategory()
+    {
+        $query = $this->db->get('subcategory');
+        return $query->num_rows();
+    }
 }
