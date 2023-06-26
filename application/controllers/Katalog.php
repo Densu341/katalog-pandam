@@ -11,24 +11,24 @@ class Katalog extends CI_Controller
 		$this->load->model('M_product');
 	}
 
-	// function index()
-	// {
-	// 	$data['category'] = $this->M_category->get_category();
-	// 	$data['subcategory'] = $this->M_subcategory->get_subcategory();
-	// 	$data['title'] = "Katalog Pandam";
-	// 	$this->load->view('user/header', $data);
-	// 	$this->load->view('user/katalog', $data);
-	// 	$this->load->view('user/footer');
-	// }
+	function index()
+	{
+		$data['category'] = $this->M_category->get_category();
+		$data['subcategory'] = $this->M_subcategory->get_subcategory();
+		$data['title'] = "Katalog Pandam";
+		$this->load->view('user/header', $data);
+		$this->load->view('user/katalog', $data);
+		$this->load->view('user/footer');
+	}
 
-	// function show_product($category_id)
-	// {
-	// 	$data['product'] = $this->M_product->getProductsByCategory($category_id);
-	// 	$data['title'] = "Katalog Pandam";
-	// 	// var_dump($data['product']);
-	// 	// die;
-	// 	$this->load->view('user/header', $data);
-	// 	$this->load->view('user/product', $data);
-	// 	$this->load->view('user/footer');
-	// }
+	function show_product($category_id)
+	{
+		$data['product'] = $this->M_product->getProductsByCategory($category_id);
+		$data['title'] = "Katalog Pandam";
+		// var_dump($data['product']);
+		// die;
+		$this->load->view('user/header', $data);
+		$this->load->view('user/product', $data);
+		$this->load->view('user/footer');
+	}
 }
