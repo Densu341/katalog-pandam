@@ -18,13 +18,13 @@ class Katalog extends CI_Controller
 		$data['subcategory'] = $this->M_subcategory->get_subcategory();
 		$data['title'] = "Katalog Pandam";
 
-		// kondisi jika ip sama maka tidak dihitung
+		// cek ip dari user
 		$ip = $this->input->ip_address();
 		$cek_ip = $this->M_visitor->cek_ip($ip);
 		if ($cek_ip == 0) {
+			// Hitung visitor jika ip berbeda
 			$this->M_visitor->save_visitor($ip);
 		}
-
 
 		$this->load->view('user/header', $data);
 		$this->load->view('user/katalog', $data);
@@ -39,7 +39,12 @@ class Katalog extends CI_Controller
 		$category_id = $this->uri->segment('3');
 
 		// ambil data by category_id
-		$data['product'] = $this->M_subcategory->get_sub_by_id($category_id);
+		$data['subCategory'] = $this->M_subcategory->get_sub_by_id($category_id);
+		// ambil data product by sub_category
+		$data['product'] = $this->M_product->getProductsByCategoryid($category_id);
+
+		// var_dump($data['product']);
+		// die;
 
 		$this->load->view('user/header', $data);
 		$this->load->view('user/subcategory', $data);

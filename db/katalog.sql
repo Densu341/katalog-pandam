@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 02, 2023 at 05:30 PM
+-- Generation Time: Jun 27, 2023 at 03:47 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -38,21 +38,26 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`category_id`, `category_name`, `banner`) VALUES
-(1, 'Bags', 'Bags.png'),
-(6, 'Binder', 'binder.png');
+(1, 'Bags', 'Bags1.png'),
+(2, 'Clutch', 'Clutch.png'),
+(3, 'Boxes', 'Boxes.png');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `code`
+-- Table structure for table `log_activities`
 --
 
-CREATE TABLE `code` (
+CREATE TABLE `log_activities` (
   `id` int(11) NOT NULL,
-  `sub_code` varchar(100) NOT NULL,
-  `mat_code` varchar(100) NOT NULL,
-  `product_code` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `tables_name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `before` varchar(255) DEFAULT NULL,
+  `after` varchar(255) DEFAULT NULL,
+  `create_date` datetime NOT NULL,
+  `create_by` varchar(75) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- --------------------------------------------------------
 
@@ -72,7 +77,13 @@ CREATE TABLE `material` (
 
 INSERT INTO `material` (`mat_id`, `material_name`, `mat_code`) VALUES
 (1, 'Rekta Pandan', 'RTPD'),
-(2, 'Embroider Lurik', 'EBLRK');
+(2, 'Embroider Lurik', 'EBLRK'),
+(4, 'Batik', 'BTK'),
+(5, 'Rekta Leather', 'RTLT'),
+(6, 'Batik Ecoprint', 'BTKEC'),
+(7, 'Leather Lukis', 'LTLK'),
+(8, 'Square Pandan', 'SQPD'),
+(9, 'Bambu', 'BM');
 
 -- --------------------------------------------------------
 
@@ -83,6 +94,7 @@ INSERT INTO `material` (`mat_id`, `material_name`, `mat_code`) VALUES
 CREATE TABLE `product` (
   `product_id` int(11) NOT NULL,
   `sub_id` int(11) NOT NULL,
+  `mat_id` int(11) DEFAULT NULL,
   `product_name` varchar(256) NOT NULL,
   `length` int(11) NOT NULL,
   `width` int(11) NOT NULL,
@@ -97,10 +109,8 @@ CREATE TABLE `product` (
 -- Dumping data for table `product`
 --
 
-INSERT INTO `product` (`product_id`, `sub_id`, `product_name`, `length`, `width`, `height`, `picture`, `description`, `price`, `product_code`) VALUES
-(1, 2, 'Purana Handbag', 21, 15, 17, 'Purana_Handbag.jpeg', 'Est distinctio voluptatem molestiae deleniti fuga, odio sunt nam nihil minima expedita possimus perspiciatis sed mollitia dolorum ad atque amet magni voluptatum adipisci?', 1000000, ''),
-(4, 2, 'Hand Bag Natural', 25, 15, 17, 'Hand_Bag_Natural.jpeg', 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Suscipit, tempora obcaecati omnis quod accusamus ea et rem nam quibusdam labore?', 400000, ''),
-(5, 2, 'Hand Bag Natural (Tas Jinjing)', 25, 15, 18, 'Hampers_Bags.png', 'lorem ipsum', 150000, '');
+INSERT INTO `product` (`product_id`, `sub_id`, `mat_id`, `product_name`, `length`, `width`, `height`, `picture`, `description`, `price`, `product_code`) VALUES
+(30, 25, 2, 'Wiguna Totebags', 25, 15, 18, 'Wiguna_Totebag.png', 'esdfghjj', 400000, '001');
 
 -- --------------------------------------------------------
 
@@ -121,10 +131,10 @@ CREATE TABLE `subcategory` (
 --
 
 INSERT INTO `subcategory` (`sub_id`, `category_id`, `subcategory_name`, `image`, `sub_code`) VALUES
-(1, 1, 'Tote Bags', 'Totebags.png', 'TB'),
-(2, 1, 'Hand Bag', 'Hand_Bags1.png', 'HB'),
-(4, 6, 'Ecofriendly Binder', 'Binder_Mix1.png', 'EB'),
-(5, 1, 'Hampers Bag', 'Hampers_Bags.png', 'HPB');
+(25, 1, 'Tote Bag', 'Tote_Bag.png', 'TB'),
+(28, 3, 'Hampers Box', 'Hampers_Box.jpeg', 'HMB'),
+(30, 1, 'Hampers Bags', 'Hampers_Bags.jpeg', 'HB'),
+(31, 2, 'Envelope Clutch', 'Envelope_Clutch.jpg', 'EC');
 
 -- --------------------------------------------------------
 
@@ -146,7 +156,28 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`no`, `email`, `username`, `password`, `role`, `image`) VALUES
-(1, 'pandamadiwastrajanaloka@gmail.com', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'administrator', 'default.jpg');
+(1, 'pandamadiwastrajanaloka@gmail.com', 'administrator', '200ceb26807d6bf99fd6f4f0d1ca54d4', 'administrator', 'favicon.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `visitors`
+--
+
+CREATE TABLE `visitors` (
+  `id` int(11) NOT NULL,
+  `ip_address` varchar(50) NOT NULL,
+  `timestamp` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `visitors`
+--
+
+INSERT INTO `visitors` (`id`, `ip_address`, `timestamp`) VALUES
+(1, '::1', '2023-06-26 15:51:53'),
+(2, '::1', '2023-06-26 16:05:18'),
+(3, '127.0.0.1', '2023-06-26 16:11:06');
 
 --
 -- Indexes for dumped tables
@@ -159,10 +190,11 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`category_id`);
 
 --
--- Indexes for table `code`
+-- Indexes for table `log_activities`
 --
-ALTER TABLE `code`
-  ADD PRIMARY KEY (`id`);
+ALTER TABLE `log_activities`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `id` (`id`);
 
 --
 -- Indexes for table `material`
@@ -174,7 +206,9 @@ ALTER TABLE `material`
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`product_id`);
+  ADD PRIMARY KEY (`product_id`),
+  ADD KEY `sub_id` (`sub_id`),
+  ADD KEY `mat_id` (`mat_id`);
 
 --
 -- Indexes for table `subcategory`
@@ -189,6 +223,12 @@ ALTER TABLE `user`
   ADD PRIMARY KEY (`no`);
 
 --
+-- Indexes for table `visitors`
+--
+ALTER TABLE `visitors`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -196,37 +236,54 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
--- AUTO_INCREMENT for table `code`
+-- AUTO_INCREMENT for table `log_activities`
 --
-ALTER TABLE `code`
+ALTER TABLE `log_activities`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `material`
 --
 ALTER TABLE `material`
-  MODIFY `mat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `mat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `subcategory`
 --
 ALTER TABLE `subcategory`
-  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `sub_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `user`
 --
 ALTER TABLE `user`
   MODIFY `no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `visitors`
+--
+ALTER TABLE `visitors`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`sub_id`) REFERENCES `subcategory` (`sub_id`),
+  ADD CONSTRAINT `product_ibfk_2` FOREIGN KEY (`mat_id`) REFERENCES `material` (`mat_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
