@@ -48,4 +48,11 @@ class M_product extends CI_Model
         $query = $this->db->get();
         return $query->result_array();
     }
+
+    // count product
+    public function count_product()
+    {
+        $query = $this->db->get('product');
+        return $query->num_rows();
+    }
 }
