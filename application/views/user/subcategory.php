@@ -81,8 +81,7 @@
         <div class="modal-body">
           <div class="container-fluid">
             <div class="row">
-              <div class="col-md-1" style="background-color: #d9d9d9">
-                <!-- icon sidebar -->
+              <div class="col-md-1 col-sm-1 col-1" style="background-color: #d9d9d9">
                 <div class="row">
                   <div class="col-md-12 text-center mt-3">
                     <a href="#">
@@ -119,13 +118,13 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-1 my-auto">
+              <div class="col-md-1 my-auto col-sm-1 col-1">
                 <a type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
                   <span><i class="fas fa-chevron-left"></i></span>
                 </a>
               </div>
 
-              <div class="col-md-9">
+              <div class="col-md-9 col-sm-9 col-9">
                 <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
                   <div class="carousel-inner">
                     <div class="carousel-item active" data-bs-interval="10000">
@@ -205,7 +204,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-md-1 my-auto">
+              <div class="col-md-1 my-auto col-sm-1 col-1">
                 <a type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
                   <span><i class="fas fa-chevron-right"></i></span>
                 </a>
