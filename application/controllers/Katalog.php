@@ -40,14 +40,15 @@ class Katalog extends CI_Controller
 
 		// ambil data by category_id
 		$data['subCategory'] = $this->M_subcategory->get_sub_by_id($category_id);
-		// ambil data product by sub_category
+
+		// ambil data product by sub_categoryid
 		$data['product'] = $this->M_product->getProductsByCategoryid($category_id);
 
 		// var_dump($data['product']);
 		// die;
 
 		$this->load->view('user/header', $data);
-		$this->load->view('user/subcategory', $data);
+		$this->load->view('user/_sub', $data);
 		$this->load->view('user/footer');
 	}
 

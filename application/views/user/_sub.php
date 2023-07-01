@@ -1,69 +1,21 @@
 <section class="container-fluid">
   <?php foreach ($subCategory as $value) : ?>
-  <div id="<?= $value['sub_code'] ?>" class="carousel slide" data-bs-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-      <?php foreach ($product as $data) :
-          $id = 0;
-        ?>
-      <?php if ($data['sub_id'] == $value['sub_id']) : ?>
-      <?php if ($id == 0) : ?>
-      <li data-bs-target="#<?= $value['sub_code'] ?>" data-bs-slide-to="<?= $id ?>" class="active"></li>
-      <?php else : ?>
-      <li data-bs-target="#<?= $value['sub_code'] ?>" data-bs-slide-to="<?= $id ?>"></li>
-      <?php endif; ?>
-      <?php endif; ?>
-      <?php $id += 1;
-        endforeach; ?>
-    </ol>
-
-    <!-- Slides -->
-    <div class="carousel-inner">
-      <?php foreach ($product as $key => $data) : ?>
-      <?php if ($data['sub_id'] == $value['sub_id']) : ?>
-      <?php if ($key == 0) : ?>
-      <div class="carousel-item active">
-        <div class="row align-items-center mb-2 py-2">
-          <div class="col-md-6 mx-auto">
-            <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              <div class="sub-image text-center">
-                <img src="<?= base_url() ?>/assets/img/product/<?= $data['picture'] ?>" alt=""
-                  class="img-fluid rounded" />
-              </div>
-            </a>
-          </div>
-        </div>
+  <div class="row d-flex justify-content-center">
+    <h2 class=" text-center"><?= $value['subcategory_name'] ?></h2>
+    <?php foreach ($product as $data) : ?>
+    <?php if ($data['sub_id'] == $value['sub_id']) : ?>
+    <div class="card col-4 mt-1 style=" width: 18rem;"">
+      <img src="<?= base_url() ?>/assets/img/product/<?= $data['picture'] ?>" class="card-img-top img-thumbnail"
+        alt="...">
+      <div class=" card-body">
+        <h5 class="card-title"><?= $data['product_name'] ?></h5>
+        <p class="card-text"><?= substr($data['description'], 0, 30) ?> ... </p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
       </div>
-      <?php else : ?>
-      <div class="carousel-item">
-        <!-- Add content for the second slide -->
-        <div class="row align-items-center mb-2 py-2">
-          <div class="col-md-6 mx-auto">
-            <a href="" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              <div class="sub-image text-center">
-                <img src="<?= base_url() ?>/assets/img/product/<?= $data['picture'] ?>" alt=""
-                  class="img-fluid rounded" />
-              </div>
-            </a>
-          </div>
-        </div>
-      </div>
-      <?php endif; ?>
-      <?php endif ?>
-      <?php endforeach; ?>
     </div>
-
-    <!-- Controls -->
-    <?php foreach ($product as $key => $data) : ?>
-    <a class="carousel-control-prev control-color" href="#<?= $value['sub_code'] ?>" role="button" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </a>
-    <a class="carousel-control-next control-color" href="#<?= $value['sub_code'] ?>" role="button" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </a>
+    <?php endif; ?>
     <?php endforeach; ?>
+    <br>
   </div>
   <?php endforeach; ?>
 
