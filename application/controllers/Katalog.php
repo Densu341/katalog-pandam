@@ -31,34 +31,47 @@ class Katalog extends CI_Controller
 		$this->load->view('user/footer');
 	}
 
-	function show_subCategory()
+	public function show_subCategory()
 	{
 		$data['title'] = "Sub Kategory";
 
-		// ambil data url 
-		$category_id = $this->uri->segment('3');
+		// Ambil data URL
+		$category_id = $this->uri->segment(3);
 
-		// ambil data by category_id
-		$data['subCategory'] = $this->M_subcategory->get_sub_by_id($category_id);
-		// ambil data product by sub_category
-		$data['product'] = $this->M_product->getProductsByCategoryid($category_id);
+		// Ambil data subkategori berdasarkan category_id
+		$data['subcategory'] = $this->M_subcategory->get_sub_by_id($category_id);
 
-		// var_dump($data['product']);
-		// die;
+		// Ambil data produk berdasarkan category_id
+		$data['products'] = $this->M_product->getProductsByCategory($category_id);
+
+		// Ambil data produk berdasarkan sub_id
+		$data['product'] = $this->M_product->getProductsBySubCategory();
+
+
+
+		// var_dump json
+		var_dump(json_encode($data['product']));
+		die;
 
 		$this->load->view('user/header', $data);
 		$this->load->view('user/subcategory', $data);
 		$this->load->view('user/footer');
 	}
 
-	function show_product($category_id)
+
+
+	function show_product_by_subcategory()
 	{
-		$data['product'] = $this->M_product->getProductsByCategory($category_id);
-		$data['title'] = "Katalog Pandam";
-		// var_dump($data['product']);
-		// die;
+		$data['title'] = "Produk";
+
+		// Ambil data URL
+		$sub_id = $this->uri->segment(3);
+
+		// Ambil data produk berdasarkan sub_id
+		$data['product'] = $this->M_product->get_product_by_subcategory($sub_id);
+
 		$this->load->view('user/header', $data);
-		$this->load->view('user/product', $data);
+		$this->load->view('user/subcategory', $data);
 		$this->load->view('user/footer');
 	}
 }
