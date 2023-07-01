@@ -45,6 +45,7 @@ class M_product extends CI_Model
         $this->db->from('product');
         $this->db->join('subcategory', 'subcategory.sub_id = product.sub_id');
         $this->db->join('category', 'category.category_id = subcategory.category_id');
+        $this->db->join('material', 'material.mat_id = product.mat_id');
         $this->db->where('category.category_id', $category_id);
         $query = $this->db->get();
         return $query->result_array();

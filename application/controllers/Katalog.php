@@ -47,12 +47,6 @@ class Katalog extends CI_Controller
 		// Ambil data produk berdasarkan sub_id
 		$data['product'] = $this->M_product->getProductsBySubCategory();
 
-
-
-		// var_dump json
-		// var_dump(json_encode($data['product']));
-		// die;
-
 		$this->load->view('user/header', $data);
 		$this->load->view('user/subcategory', $data);
 		$this->load->view('user/footer');
