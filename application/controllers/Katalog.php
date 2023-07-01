@@ -50,8 +50,8 @@ class Katalog extends CI_Controller
 
 
 		// var_dump json
-		var_dump(json_encode($data['product']));
-		die;
+		// var_dump(json_encode($data['product']));
+		// die;
 
 		$this->load->view('user/header', $data);
 		$this->load->view('user/subcategory', $data);
