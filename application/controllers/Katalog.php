@@ -41,7 +41,6 @@ class Katalog extends CI_Controller
 		// Ambil data subkategori berdasarkan category_id
 		$data['subcategory'] = $this->M_subcategory->get_sub_by_id($category_id);
 
-
 		// Ambil data produk berdasarkan category_id
 		$data['products'] = $this->M_product->getProductsByCategory($category_id);
 
@@ -49,13 +48,8 @@ class Katalog extends CI_Controller
 		$data['product'] = $this->M_product->getProductsBySubCategory();
 
 
-
-		// var_dump json
-		// var_dump(json_encode($data['product']));
-		// die;
-
 		$this->load->view('user/header', $data);
-		$this->load->view('user/_sub', $data);
+		$this->load->view('user/subcategory', $data);
 		$this->load->view('user/footer');
 	}
 

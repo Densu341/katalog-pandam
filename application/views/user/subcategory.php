@@ -1,4 +1,3 @@
-
 <section class="container-fluid pt-2">
   <?php foreach ($subcategory as $s) : ?>
     <div id="<?= $s['sub_code'] ?>" class="carousel slide" data-bs-ride="carousel">
@@ -16,16 +15,14 @@
                 <div class="col-md-6 mx-auto">
                   <div class="sub-image text-center">
                     <img src="<?= base_url() ?>/assets/img/product/<?= $p['picture'] ?>" alt="" class="img-fluid rounded" />
-                    <div class="container d-flex justify-content-center mt-2">
-                      <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#product" data-bs-sub="<?= $p['sub_id']; ?>" data-bs-name="<?= $s['subcategory_name'] ?>"> Show Product Details </button>
-                    </div>
+                  </div>
+                  <div class="container d-flex justify-content-center mt-2">
+                    <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#product" data-bs-name="<?= $p['product_name'] ?>" data-bs-material="<?= $p['material_name'] ?>" data-bs-price="<?= $p['price'] ?>" data-bs-description="<?= $p['description'] ?>" data-bs-image="<?= $p['picture'] ?>" data-bs-size="<?= $p['length'] . 'x' . $p['width'] . 'x' . $p['height'] ?>">Show Product Details</button>
                   </div>
                 </div>
-
               </div>
             </div>
           <?php endif; ?>
-          </button>
         <?php endforeach; ?>
       </div>
 
@@ -45,8 +42,7 @@
     <div class="row">
       <div class="col-md-6 mx-auto">
         <div class="text-end">
-          <!-- <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#product" data-bs-sub="<?= $product['sub_id']; ?>" data-bs-name="<?= $s['subcategory_name'] ?>">
-          </button> -->
+
         </div>
       </div>
     </div>
@@ -120,24 +116,17 @@
                   <div class="carousel-item active" data-bs-interval="10000">
                     <div class="row">
                       <div class="col my-auto">
-                        <img src="<?= base_url() ?>/assets/static/WIGUNA_ToteBags_mix_Shibori.jpeg" class="d-block w-100" alt="..." />
+                        <img src="" class="d-block w-100 imageProduct" alt="..." />
                       </div>
                       <div class="col">
-                        <h3>WIGUNA Tote Bags mix Shibori</h3>
+                        <h3 class="nameProduct"></h3>
                         <p>by Pandam</p>
-                        <h6>Product Code</h6>
-                        <h6>Material</h6>
-                        <h6>Size</h6>
-                        <h6>Price</h6>
+                        <h6>Product Code : <span class="codeProduct"></span></h6>
+                        <h6>Material : <span class="materialProduct"></span></h6>
+                        <h6>Size : <span class="sizeProduct"></span></h6>
+                        <h6>Price : <span class="priceProduct"></span></h6>
                         <h6>Description</h6>
-                        <p>
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem laborum excepturi
-                          fugiat iusto sapiente minus, repellendus sed, quia cupiditate, unde quaerat eum voluptate?
-                          Dolorem eius, dicta hic nihil tenetur voluptas maiores quos nesciunt impedit, distinctio
-                          architecto fuga dolor optio veritatis beatae molestiae minima? Ipsa mollitia, earum saepe
-                          provident natus vel?
-                        </p>
-
+                        <p class="descriptionProduct"></p>
                       </div>
                     </div>
                   </div>
@@ -202,3 +191,44 @@
     </div>
   </div>
 </div>
+
+<script>
+  let product = document.getElementById('product')
+  // get base url
+  var baseURL = "<?php echo base_url(); ?>";
+  product.addEventListener('show.bs.modal', function(event) {
+    // Button that triggered the modal
+    let button = event.relatedTarget
+    // prepare data
+    let name = button.getAttribute('data-bs-name')
+    let material = button.getAttribute('data-bs-material')
+    let price = button.getAttribute('data-bs-price')
+    let description = button.getAttribute('data-bs-description')
+    let size = button.getAttribute('data-bs-size')
+    let image = button.getAttribute('data-bs-image')
+
+    // prepare container for data
+    let containerName = product.querySelector('.nameProduct')
+    let containerMaterial = product.querySelector('.materialProduct')
+    let containerPrice = product.querySelector('.priceProduct')
+    let containerDescription = product.querySelector('.descriptionProduct')
+    let containerSize = product.querySelector('.sizeProduct')
+    let containerImage = product.querySelector('.imageProduct')
+
+    // converse price(string) to rupiah
+    let rupiahFormat = new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+    }).format(price);
+
+
+
+    // store data to format models
+    containerName.textContent = name;
+    containerMaterial.textContent = material;
+    containerPrice.textContent = rupiahFormat;
+    containerDescription.textContent = description;
+    containerSize.textContent = size;
+    containerImage.setAttribute("src", baseURL + "/assets/img/product/" + image);
+  })
+</script>
