@@ -1,3 +1,4 @@
+
 <section class="container-fluid pt-2">
   <?php foreach ($subcategory as $s) : ?>
     <div id="<?= $s['sub_code'] ?>" class="carousel slide" data-bs-ride="carousel">
@@ -20,6 +21,7 @@
                     </div>
                   </div>
                 </div>
+
               </div>
             </div>
           <?php endif; ?>
