@@ -38,17 +38,6 @@ class M_product extends CI_Model
         $this->db->delete('product');
     }
 
-    // public function getProductsByCategory($category_id)
-    // {
-    //     $this->db->select('*');
-    //     $this->db->from('product');
-    //     $this->db->join('subcategory', 'subcategory.sub_id = product.sub_id');
-    //     $this->db->join('category', 'category.category_id = subcategory.category_id');
-    //     $this->db->where('category.category_id', $category_id);
-    //     $query = $this->db->get();
-    //     return $query->result_array();
-    // }
-
     // query untuk sub category page (user)
     public function getProductsByCategory($category_id)
     {
